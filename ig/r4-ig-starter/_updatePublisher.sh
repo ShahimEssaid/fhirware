@@ -79,9 +79,6 @@ else
 fi
 
 
-echo EXITING WITH 0
-exit 0
-
 if [[ $skipPrompts == false ]]; then
 
   if [[ $upgrade == true ]]; then
@@ -134,3 +131,6 @@ if [[ $skipPrompts == true ]] || [[ $response =~ ^[yY].*$ ]]; then
   cp /tmp/_updatePublisher.new _updatePublisher.sh
   rm /tmp/_updatePublisher.new
 fi
+
+echo EXITING WITH 0
+exit 0
