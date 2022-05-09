@@ -16,10 +16,6 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
-  hello:
-    - uses: ./.github/workflows/ig.build.yml
-      with:
-        hello: World! Param
 
   # This workflow contains a single job called "build"
   build:
@@ -32,6 +28,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 
       - uses: actions/checkout@v3
+      - uses: ./.github/workflows/ig.build.yml
+        with:
+          hello: World! Param
       - uses: ruby/setup-ruby@2b019609e2b0f1ea1a2bc8ca11cb82ab46ada124
         with:
           ruby-version: 2.7
