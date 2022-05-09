@@ -32,16 +32,16 @@ while [ "$#" -gt 0 ]; do
     shift
 done
 
-echo EXITING WITH 0
-exit 0
-
 echo "Checking internet connection"
-curl -sSf tx.fhir.org > /dev/null
+curl -sSf tx.fhir.org #> /dev/null
 
 if [ $? -ne 0 ] ; then
   echo "Offline (or the terminology server is down), unable to update.  Exiting"
   exit 1
 fi
+
+echo EXITING WITH 0
+exit 0
 
 if [ ! -d "$input_cache_path" ] ; then
   if [ $FORCE != true ]; then
