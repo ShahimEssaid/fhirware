@@ -23,10 +23,13 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: ${{env.GITHUB_WORKSPACE}}/github/workflows/ig.build.yml
+        with:
+          hello: World! Param
       - uses: actions/checkout@v3
       - uses: ruby/setup-ruby@2b019609e2b0f1ea1a2bc8ca11cb82ab46ada124
         with:
-          ruby-version: 2.7.6
+          ruby-version: 2.7
 
       # Runs a single command using the runners shell
       - name: Run a one-line script

@@ -1,0 +1,13 @@
+on:
+  workflow_call:
+    inputs:
+      hello:
+        required: true
+        type: string
+jobs:
+  ig-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Hello World
+        run: "echo Hello: ${{ inputs.hello }}"
