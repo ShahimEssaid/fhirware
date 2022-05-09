@@ -36,4 +36,4 @@ jobs:
           echo test, and deploy your project.
           echo PWD: $(pwd)
           env | sort
-          ll -la
+          ls -la
