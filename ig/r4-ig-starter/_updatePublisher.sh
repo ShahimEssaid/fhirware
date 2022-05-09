@@ -1,4 +1,6 @@
 #!/bin/bash
+set -x
+
 pubsource=https://github.com/HL7/fhir-ig-publisher/releases/latest/download/
 publisher_jar=publisher.jar
 dlurl=$pubsource$publisher_jar
@@ -30,12 +32,11 @@ while [ "$#" -gt 0 ]; do
     shift
 done
 
+echo EXITING WITH 0
+exit 0
+
 echo "Checking internet connection"
-case "$OSTYPE" in
-	linux-gnu* ) ping tx.fhir.org -4 -c 1 -w 1000 >/dev/null ;;
-  darwin* )	ping tx.fhir.org -c 1 >/dev/null ;;
-	*) echo "unknown: $OSTYPE"; exit 1 ;;
-esac
+curl -sSf tx.fhir.org > /dev/null
 
 if [ $? -ne 0 ] ; then
   echo "Offline (or the terminology server is down), unable to update.  Exiting"
