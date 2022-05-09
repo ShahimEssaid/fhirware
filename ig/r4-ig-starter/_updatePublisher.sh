@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 
 pubsource=https://github.com/HL7/fhir-ig-publisher/releases/latest/download/
 publisher_jar=publisher.jar
@@ -131,6 +131,3 @@ if [[ $skipPrompts == true ]] || [[ $response =~ ^[yY].*$ ]]; then
   cp /tmp/_updatePublisher.new _updatePublisher.sh
   rm /tmp/_updatePublisher.new
 fi
-
-echo EXITING WITH 0
-exit 0
