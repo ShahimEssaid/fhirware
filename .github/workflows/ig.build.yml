@@ -1,7 +1,11 @@
+name: Build IG with publisher version
 on:
   workflow_call:
     inputs:
       hello:
+        required: true
+        type: string
+      publisher-version:
         required: true
         type: string
 jobs:
