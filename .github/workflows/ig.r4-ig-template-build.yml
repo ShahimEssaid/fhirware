@@ -20,6 +20,7 @@ jobs:
       uses: ./.github/workflows/ig.build.yml
       with:
         hello: World! Param
+        publisher-version: 123
 
   # This workflow contains a single job called "build"
   build:
