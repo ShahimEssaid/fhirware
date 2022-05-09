@@ -37,4 +37,6 @@ jobs:
           echo PWD: $(pwd)
           env | sort
           ls -la
+      - name: Update publisher
+        run: |
           ig/r4-ig-starter/_updatePublisher.sh -y
