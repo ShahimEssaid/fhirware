@@ -42,4 +42,5 @@ jobs:
           ig/r4-ig-starter/_updatePublisher.sh -y
       - name: Gen once
         run: |
-          ig/r4-ig-starter/_genonce.sh
+          cd ig/ig/r4-ig-starter
+          ./_genonce.sh
