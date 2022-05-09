@@ -39,8 +39,11 @@ jobs:
           ls -la
       - name: Update publisher
         run: |
+          pwd
           cd ig/r4-ig-starter
           ./_updatePublisher.sh -y
       - name: Gen once
         run: |
+          pwd
+          cd ig/r4-ig-starter
           ./_genonce.sh
