@@ -36,7 +36,7 @@ jobs:
         # This workflow contains a single job called "build"
   build:
     needs: setup
-    uses: ./github/workflows/ig.build.yml
+    uses: ./.github/workflows/ig.build.yml@main
     with:
       ig-root: ${{ '/ig/r4-ig-starter' }}
       publisher-args: ${{ '-ig ig.ini' }}
