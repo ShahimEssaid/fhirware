@@ -19,6 +19,9 @@ on:
         default: gh-pages
       io-path:
         type: string
+    secrets:
+      io-token:
+        required: true
 jobs:
   docker-build:
     runs-on: ubuntu-latest
