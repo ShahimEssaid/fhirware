@@ -1,5 +1,8 @@
 name: Misc
-on: push
+on:
+  push:
+    paths:
+      - .github/workflows/tmp.yml
 jobs:
   tmp1:
     runs-on: ubuntu-latest
@@ -9,4 +12,4 @@ jobs:
           echo
           echo PWD: $(pwd)
           cd ../..
-          find /home/runner -type d
+          find /home/runner/.config
