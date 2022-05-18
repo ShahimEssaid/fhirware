@@ -1,17 +1,27 @@
 name: Build IG with publisher version
+
 on:
   workflow_call:
     inputs:
-      hello:
+      ig-root:
         required: true
         type: string
-      publisher-version:
+      publisher-args:
+        required: true
+        type: string
+      docker-tag:
         required: true
         type: string
 jobs:
-  ig-build:
+  docker-build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.ig-root }}
 
     steps:
-      - name: Hello World
-        run: "echo Hello: ${{ inputs.hello }}"
+      - name: Docker build
+        run: |
+          docker pull "sessaid/ig-publisher:${{inputs.docker-tag}}"
+          docker run --volume ${{inputs.ig-root}}:/ig-root "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
+          

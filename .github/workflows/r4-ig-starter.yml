@@ -1,0 +1,44 @@
+# This workflow is meant to build an IG under the /ig folder if any files are changed for
+# that specific IG. The pattern, for now, is that this workflow''s file name matches the
+# IG folder's name and does what is needed to build and publish the IG.
+
+# Features:
+#
+
+
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+    paths:
+      - /ig/r4-ig-starter/**
+
+      # Allows you to run this workflow manually from the Actions tab
+  #workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  # Do any setup needed to create job output parameters needed to the later build job
+  setup:
+      name: Setup
+      runs-on: ubuntu-latest
+      steps:
+        - id: step-1
+          run: |
+            echo step-1 setup
+
+
+        # This workflow contains a single job called "build"
+  build:
+    needs: setup
+    uses: ./github/workflows/ig.build.yml
+    with:
+      ig-root: ${{ '/ig/r4-ig-starter' }}
+      publisher-args: ${{ '-ig ig.ini' }}
+      docker-tag: ${{ 'latest' }}
+
