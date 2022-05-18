@@ -1,0 +1,11 @@
+name: Misc
+on: push
+jobs:
+  tmp1:
+    steps:
+      - run: |
+          env | sort
+          echo
+          echo PWD: $(pwd)
+          cd ../..
+          find . -type d
