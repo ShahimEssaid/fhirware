@@ -33,7 +33,7 @@ jobs:
 #            echo step-1 setup
 
   build:
-    needs: setup
+    #needs: setup
     uses: ./.github/workflows/ig.build.yml
     secrets:
       io-token: ${{ secrets.PUBLISHER_IO }}
