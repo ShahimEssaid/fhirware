@@ -9,4 +9,4 @@ jobs:
           echo
           echo PWD: $(pwd)
           cd ../..
-          find . -type d
+          find /home/runner -type d
