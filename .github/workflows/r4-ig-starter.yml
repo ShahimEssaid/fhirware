@@ -39,6 +39,6 @@ jobs:
       ig-root: ${{ 'ig/r4-ig-starter' }}
       publisher-args: ${{ '-ig ig.ini' }}
       docker-tag: ${{ 'latest' }}
-      io-repo: ShahimEssaid/IORepo
+      #io-repo: ShahimEssaid/IORepo
       io-path: some/path
 
