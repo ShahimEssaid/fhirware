@@ -12,18 +12,25 @@ on:
       docker-tag:
         required: true
         type: string
+      io-repo:
+      io-path:
 jobs:
   docker-build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ inputs.ig-root }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+          with:
+            path: ig
       - name: Docker build
         run: |
           docker pull "sessaid/ig-publisher:${{inputs.docker-tag}}"
-          docker run --volume "${GITHUB_WORKSPACE}/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
+          docker run --rm --volume "${GITHUB_WORKSPACE}/ig/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
+      - name: Checkout IO
+        if: inputs.io-repo != null
+        run: |
+          echo checking out IO repo ${{ inputs.io-repo }} with path ${{ inputs.io-path }}
+        
+
           
