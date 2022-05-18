@@ -24,13 +24,13 @@ on:
 jobs:
 
   # Do any setup needed to create job output parameters needed to the later build job
-  setup:
-      name: Setup
-      runs-on: ubuntu-latest
-      steps:
-        - id: step-1
-          run: |
-            echo step-1 setup
+#  setup:
+#      name: Setup
+#      runs-on: ubuntu-latest
+#      steps:
+#        - id: step-1
+#          run: |
+#            echo step-1 setup
 
   build:
     needs: setup
@@ -39,6 +39,7 @@ jobs:
       ig-root: ${{ 'ig/r4-ig-starter' }}
       publisher-args: ${{ '-ig ig.ini' }}
       docker-tag: ${{ 'latest' }}
-      #io-repo: ShahimEssaid/IORepo
-      io-path: some/path
+      io-repo: ShahimEssaid/tmp-io
+      io-token: ${{ secrets.PUBLISHER_IO }}
+      io-path: test/ig
 

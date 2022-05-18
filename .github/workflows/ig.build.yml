@@ -14,6 +14,11 @@ on:
         type: string
       io-repo:
         type: string
+      io-token:
+        type: string
+      io-branch:
+        type: string
+        default: gh-pages
       io-path:
         type: string
 jobs:
@@ -30,10 +35,28 @@ jobs:
           echo Running IG build
           #docker pull "sessaid/ig-publisher:${{inputs.docker-tag}}"
           #docker run --rm --volume "${GITHUB_WORKSPACE}/ig/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
+
+      # Publish if requested
       - name: Checkout IO
         if: inputs.io-repo != ''
+        uses: actions/checkout@v3
+          with:
+            path: io
+            repository: ${{inputs.io-repo}}
+            ref: ${{ inputs.io-branch }}
+            token: ${{ inputs.io-token }}
+
+      - name: Publish IO
+        if: inputs.io-repo != ''
         run: |
-          echo checking out IO repo ${{ inputs.io-repo }} with path ${{ inputs.io-path }}
-        
+          rm -rf "${GITHUB_WORKSPACE}/io/${{ inputs.io-path }}"
+          mkdir -p "${GITHUB_WORKSPACE}/io/${{ inputs.io-path }}"
+          cp -ra "${GITHUB_WORKSPACE}/ig/${{inputs.ig-root}}/output" "${GITHUB_WORKSPACE}/io/${{ inputs.io-path }}"
+          git config --global user.name 'Publisher IO'
+          git config --global user.email 'shahim@essaid.com'
+          git commit -am "Publisher IO -GHB"
+          cat .git/config
+          git remote set-url origin "https://github.com/${{inputs.io-repo}}"
+          git push
 
           
