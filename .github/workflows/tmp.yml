@@ -2,6 +2,7 @@ name: Misc
 on: push
 jobs:
   tmp1:
+    runs-on: ubuntu-latest
     steps:
       - run: |
           env | sort
