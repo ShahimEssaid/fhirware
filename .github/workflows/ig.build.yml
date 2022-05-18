@@ -40,11 +40,11 @@ jobs:
       - name: Checkout IO
         if: inputs.io-repo != ''
         uses: actions/checkout@v3
-          with:
-            path: io
-            repository: ${{inputs.io-repo}}
-            ref: ${{ inputs.io-branch }}
-            token: ${{ inputs.io-token }}
+        with:
+          path: io
+          repository: ${{inputs.io-repo}}
+          ref: ${{ inputs.io-branch }}
+          token: ${{ inputs.io-token }}
 
       - name: Publish IO
         if: inputs.io-repo != ''
