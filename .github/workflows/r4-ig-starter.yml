@@ -35,6 +35,7 @@ jobs:
   build:
     needs: setup
     uses: ./.github/workflows/ig.build.yml
+    secrets: inherit
     with:
       ig-root: ${{ 'ig/r4-ig-starter' }}
       publisher-args: ${{ '-ig ig.ini' }}
