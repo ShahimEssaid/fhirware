@@ -25,5 +25,5 @@ jobs:
       - name: Docker build
         run: |
           docker pull "sessaid/ig-publisher:${{inputs.docker-tag}}"
-          docker run --volume "${GITHUB_WORKSPACE}/${{inputs.ig-root}}:/ig-root" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
+          docker run --volume "${GITHUB_WORKSPACE}/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
           
