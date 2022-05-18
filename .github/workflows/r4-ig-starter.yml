@@ -32,13 +32,11 @@ jobs:
           run: |
             echo step-1 setup
 
-
-        # This workflow contains a single job called "build"
   build:
     needs: setup
     uses: ./.github/workflows/ig.build.yml
     with:
-      ig-root: ${{ '/ig/r4-ig-starter' }}
+      ig-root: ${{ 'ig/r4-ig-starter' }}
       publisher-args: ${{ '-ig ig.ini' }}
       docker-tag: ${{ 'latest' }}
 
