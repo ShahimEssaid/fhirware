@@ -21,8 +21,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-          with:
-            path: ig
+        with:
+          path: ig
       - name: Docker build
         run: |
           echo Running IG build
