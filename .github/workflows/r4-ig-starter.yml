@@ -35,12 +35,12 @@ jobs:
   build:
     needs: setup
     uses: ./.github/workflows/ig.build.yml
-    secrets: inherit
+    secrets:
+      io-token: ${{ secrets.PUBLISHER_IO }}
     with:
       ig-root: ${{ 'ig/r4-ig-starter' }}
       publisher-args: ${{ '-ig ig.ini' }}
       docker-tag: ${{ 'latest' }}
       io-repo: ShahimEssaid/tmp-io
-      io-token: ${{ secrets.PUBLISHER_IO }}
       io-path: test/ig
 

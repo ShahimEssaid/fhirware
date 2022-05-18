@@ -14,8 +14,6 @@ on:
         type: string
       io-repo:
         type: string
-      io-token:
-        type: string
       io-branch:
         type: string
         default: gh-pages
@@ -44,7 +42,7 @@ jobs:
           path: io
           repository: ${{inputs.io-repo}}
           ref: ${{ inputs.io-branch }}
-          token: ${{ inputs.io-token }}
+          token: ${{ secrets.io-token }}
 
       - name: Publish IO
         if: inputs.io-repo != ''
