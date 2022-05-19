@@ -34,8 +34,8 @@ jobs:
       - name: Docker build
         run: |
           echo Running IG build
-          #docker pull "sessaid/ig-publisher:${{inputs.docker-tag}}"
-          #docker run --rm --volume "${GITHUB_WORKSPACE}/ig/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
+          docker pull "sessaid/ig-publisher:${{inputs.docker-tag}}"
+          docker run --rm --volume "${GITHUB_WORKSPACE}/ig/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
 
       # Publish if requested
       - name: Checkout IO
