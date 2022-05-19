@@ -59,7 +59,8 @@ jobs:
           cd "${GITHUB_WORKSPACE}/io"
           git config --global user.name 'Publisher IO'
           git config --global user.email 'shahim@essaid.com'
-          git commit -am "Publisher IO -GHB"
+          git add -A
+          git commit -m "Publisher IO -GHB"
           cat .git/config
           git remote set-url origin "https://github.com/${{inputs.io-repo}}"
           git push
