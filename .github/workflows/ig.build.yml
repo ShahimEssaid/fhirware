@@ -13,9 +13,9 @@ on:
       ref:
         type: string
         required: true
-      depth:
-        type: number
-        required: true
+#      depth:
+#        type: number
+#        required: true
 
       # build related
       ig-root:
@@ -79,7 +79,6 @@ jobs:
         with:
           repository: ${{ inputs.owner-repo }}
           ref: ${{ inputs.ref }}
-#          token: ${{ secrets.token }}
           path: ig-clone
           fetch-depth: ${{ inputs.depth }}
 
