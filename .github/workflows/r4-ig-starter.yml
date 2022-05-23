@@ -62,14 +62,14 @@ jobs:
           echo "::set-output name=depth::1"
           echo "::set-output name=try-merge::false"
           echo "::set-output name=base-ref::"
-          echo "::set-output name=pr-number::"
+          echo "::set-output name=pr-number::1"
           echo "::set-output name=ig-root::${{ env.IG_ROOT }}"
-          echo "::set-output name=publisher-args:${{ env.PUBLISHER_ARGS }}"
-          echo "::set-output name=docker-tag:${{ env.DOCKER_TAG }}"
-          echo "::set-output name=io-owner:${{ env.IO_OWNER }}"
-          echo "::set-output name=io-repo:${{ env.IO_REPO }}"
-          echo "::set-output name=io-branch:${{ env.IO_BRANCH }}"
-          echo "::set-output name=io-path:${{ env.IO_PATH_PREFIX }}/${{ env.IG_ROOT }}/branch/${{ github.ref }}"
+          echo "::set-output name=publisher-args::${{ env.PUBLISHER_ARGS }}"
+          echo "::set-output name=docker-tag::${{ env.DOCKER_TAG }}"
+          echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
+          echo "::set-output name=io-repo::${{ env.IO_REPO }}"
+          echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
+          echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}/${{ env.IG_ROOT }}/branch/${{ github.ref }}"
           
           
 
