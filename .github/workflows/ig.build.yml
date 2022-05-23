@@ -144,5 +144,8 @@ jobs:
             echo merge has conflicts
           fi
           cat .git/config
+
+          mkdir -p "${{inputs.ig-root}}/output"
+          echo hello merged branch build $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
           
           
