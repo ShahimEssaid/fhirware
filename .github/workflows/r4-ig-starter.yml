@@ -59,7 +59,7 @@ jobs:
         run: |
           echo "::set-output name=owner-repo::${{ github.repository }}"
           echo "::set-output name=ref::${{ github.ref }}"
-          echo "::set-output name=depth::0"
+          echo "::set-output name=depth::1"
           echo "::set-output name=try-merge::false"
           echo "::set-output name=base-ref::"
           echo "::set-output name=pr-number::"
@@ -87,7 +87,7 @@ jobs:
     with:
       owner-repo: ${{ needs.vars.outputs.owner-repo }}
       ref: ${{ needs.vars.outputs.ref }}
-      depth: ${{ needs.vars.outputs.depth }}
+      depth: 1
 
       ig-root: ${{ needs.vars.outputs.ig-root }}
       publisher-args: ${{ needs.vars.outputs.publisher-args }}
