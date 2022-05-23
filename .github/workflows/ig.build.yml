@@ -85,8 +85,10 @@ jobs:
 
       - name: Docker build IG
         run: |
+          cd ig-clone
+          cat .git/config
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
-          mkdir -p "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output"
+          mkdir -p ${{inputs.ig-root}}/output"
           echo hello $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
           #docker pull "sessaid/ig-publisher:${{inputs.docker-tag}}"
           #docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
@@ -106,11 +108,9 @@ jobs:
         run: |
           which bash
           set -x
-          #env | sort
           [[ -d "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}" ]] &&  rm -rf "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}"
           mkdir -p "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}"
           cp -ra "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output"/* "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}"
-          
           cd "${GITHUB_WORKSPACE}/io-clone"
           touch IG_BUILDS.md
           { 
@@ -119,11 +119,7 @@ jobs:
           } | sort > IG_BUILDS.md.new
           mv -f IG_BUILDS.md.new IG_BUILDS.md
           
-          #printf '%s\n' "[${{ inputs.io-path }}](http://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/)"
-          #ls -la
-          #pwd
           git add -A
-          #git status --porcelain
           if [[ -z "$(git status --porcelain)" ]]; then
             echo NO changes
           else
@@ -134,4 +130,3 @@ jobs:
             git remote set-url origin "https://github.com/${{inputs.io-owner}}/${{inputs.io-repo}}"
             git push
           fi
-
