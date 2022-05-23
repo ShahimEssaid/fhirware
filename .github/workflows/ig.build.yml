@@ -122,6 +122,8 @@ jobs:
           ls -la
           pwd
           git add -A
+          git status --porcelain
+          
           if [[ -z "$(git status --porcelain)" ]]; then
             echo NO changes
           else
