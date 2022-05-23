@@ -84,8 +84,8 @@ jobs:
       - name: Docker build IG
         run: |
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
-          mkdir -p "${GITHUB_WORKSPACE}/ig/${{inputs.ig-root}}/output"
-          echo hello > "${GITHUB_WORKSPACE}/ig/${{inputs.ig-root}}/output/index.html"
+          mkdir -p "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output"
+          echo hello > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
           #docker pull "sessaid/ig-publisher:${{inputs.docker-tag}}"
           #docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
 
@@ -106,7 +106,7 @@ jobs:
           env | sort
           rm -rf "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}" || true
           mkdir -p "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}"
-          cp -ra "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output" "${GITHUB_WORKSPACE}/io/${{ inputs.io-path }}"
+          cp -ra "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output" "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}"
           
           cd "${GITHUB_WORKSPACE}/io-clone"
           touch IG_BUILDS.md
