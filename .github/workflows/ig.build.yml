@@ -139,6 +139,7 @@ jobs:
           git clean -fdx
           git remote add upstream "https://github.com/${{ github.repository }}"
           cat .git/config
+          git fetch --all
           git checkout -b upstream-${{ inputs.base-ref }} --track  "origin/upstream/${{ inputs.base-ref }}"
           if git merge "${{ inputs.ref }}"; then
             echo merge was successful
