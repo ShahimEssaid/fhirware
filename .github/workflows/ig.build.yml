@@ -119,7 +119,8 @@ jobs:
           mv -f IG_BUILDS.md.new IG_BUILDS.md
           
           printf '%s\n' "[${{ inputs.io-path }}](http://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/)"
-          
+          ls -la
+          pwd
           git add -A
           if [[ -z "$(git status --porcelain)" ]]; then
             echo NO changes
