@@ -109,7 +109,7 @@ jobs:
           env | sort
           [[ -d "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}" ]] &&  rm -rf "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}"
           mkdir -p "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}"
-          cp -ra "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/*" "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}"
+          cp -ra "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output"/* "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}"
           
           cd "${GITHUB_WORKSPACE}/io-clone"
           touch IG_BUILDS.md
