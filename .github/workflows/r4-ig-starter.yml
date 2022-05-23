@@ -75,14 +75,8 @@ jobs:
 
       - id: pr-target-setup
         if: ${{ github.event_name }} == "pull_request_target"
-
-      - id: step-1
         run: |
-            
-            #  if it's just a push, we only build the branch
-            
-            
-            # if it is a pull request, we build the branch, and check if we can merge with default branch and build as well.
+          echo doing pull request target.
             
 
   build:
