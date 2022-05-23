@@ -104,7 +104,7 @@ jobs:
         run: |
           set -x
           env | sort
-          rm -rf "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}"
+          rm -rf "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}" || true
           mkdir -p "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}"
           cp -ra "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output" "${GITHUB_WORKSPACE}/io/${{ inputs.io-path }}"
           
