@@ -35,16 +35,15 @@ on:
 
       # base for PR builds
       # this being set is an indicator of a PR build that should be merge-built as well if possible
-      try-merge:
-        description: if a merge with a base ref should be done. this is a string due to not being clear on boolean type
-        # TODO: See: https://github.com/actions/runner/issues/1483
-        type: string
+#      try-merge:
+#        description: if a merge with a base ref should be done. this is a string due to not being clear on boolean type
+#        # TODO: See: https://github.com/actions/runner/issues/1483
+#        type: string
 
       base-ref:
         type: string
-      pr-number:
-        type: string
-
+#      pr-number:
+#        type: string
 
       # publication related
       io-owner:
@@ -82,19 +81,19 @@ jobs:
           path: ig-clone
           fetch-depth: ${{ inputs.depth }}
 
-      - name: Docker build IG
+      - name: Build IG branch
         run: |
           set -x
           cd ig-clone
           cat .git/config
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
           mkdir -p "${{inputs.ig-root}}/output"
-          echo hello $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
+          echo hello branch build $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
           #docker pull "sessaid/ig-publisher:${{inputs.docker-tag}}"
           #docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
 
       # Publish if requested
-      - name: Checkout IO
+      - name: Checkout IO branch
         if: inputs.io-repo != ''
         uses: actions/checkout@v3
         with:
@@ -103,15 +102,15 @@ jobs:
           path: io-clone
           token: ${{ secrets.io-token }}
 
-      - name: Publish IO
+      - name: Publish branch
         if: inputs.io-repo != ''
         run: |
-          which bash
           set -x
-          [[ -d "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}" ]] &&  rm -rf "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}"
-          mkdir -p "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}"
-          cp -ra "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output"/* "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}"
           cd "${GITHUB_WORKSPACE}/io-clone"
+          cat .git/config
+          [[ -d "${{ inputs.io-path }}" ]] &&  rm -rf "${{ inputs.io-path }}"
+          mkdir -p "${{ inputs.io-path }}"
+          cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}"
           touch IG_BUILDS.md
           { 
             cat IG_BUILDS.md | grep -v '${{ inputs.io-path }}'; 
@@ -126,7 +125,13 @@ jobs:
             git config --global user.name 'Publisher IO'
             git config --global user.email 'shahim@essaid.com'
             git commit -m "IG: ${{ inputs.owner-repo }}, ref: ${{ inputs.ref }}  run_id: ${{ github.run_id }}, run_number: ${{ github.run_number }}, run_attempt: ${{ github.run_attempt }}"
-            cat .git/config
-            git remote set-url origin "https://github.com/${{inputs.io-owner}}/${{inputs.io-repo}}"
+            #cat .git/config
+            #git remote set-url origin "https://github.com/${{inputs.io-owner}}/${{inputs.io-repo}}"
             git push
           fi
+
+      - name: If merge
+        if: inputs.base-ref != ''
+        # we try to merge and build again
+        run: |
+          echo doing base merge and build

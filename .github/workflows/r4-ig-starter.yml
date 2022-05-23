@@ -74,9 +74,26 @@ jobs:
             echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_ROOT }}/branch/${{ github.ref_name }}"          
           
           elif [ "${{ github.event_name }}" = "pull_request_target" ]; then
-           echo pull request target
+            echo "::set-output name=owner-repo::${{ github.event.pull_request.head.repo.full_name }}"
+            echo "::set-output name=ref::${{ github.event.pull_request.head.ref }}"
+            echo "::set-output name=try-merge::true"
+            echo "::set-output name=base-ref::${{ event.pull_request.base.ref }}"
+            echo "::set-output name=pr-number::${{ event.number }}"
+            echo "::set-output name=ig-root::${{ env.IG_ROOT }}"
+            echo "::set-output name=publisher-args::${{ env.PUBLISHER_ARGS }}"
+            echo "::set-output name=docker-tag::${{ env.DOCKER_TAG }}"
+            echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
+            echo "::set-output name=io-repo::${{ env.IO_REPO }}"
+            echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
+            echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_ROOT }}/pr/${{ event.number }}/${{ github.event.pull_request.head.repo.full_name }}/${{ github.event.pull_request.head.ref }}"
+            # /ig/ig-name/branch/branch-name
+            # /ig/ig-name/branch/branch-name.merged
+            # /ig/ig-name/pr/number/owner/repo/branch-name
+            # /ig/ig-name/pr/number/owner/repo/branch-name.merged
           else 
-           echo else
+           echo EXITING DUE TO UNKNOWN EVENT NAME.
+           exit 1
+          
           fi
           
 
@@ -93,7 +110,7 @@ jobs:
       publisher-args: ${{ needs.vars.outputs.publisher-args }}
       docker-tag: ${{ needs.vars.outputs.docker-tag }}
 
-      try-merge: ${{ needs.vars.outputs.try-merge }}
+#      try-merge: ${{ needs.vars.outputs.try-merge }}
       base-ref: ${{ needs.vars.outputs.base-ref }}
 
       io-owner: ${{ needs.vars.outputs.io-owner }}
@@ -101,9 +118,4 @@ jobs:
       io-branch: ${{ needs.vars.outputs.io-branch }}
       io-path: ${{ needs.vars.outputs.io-path }}
 
-      # /ig/ig-name/branch/branch-name
-      # /ig/ig-name/branch/branch-name.merged
-
-      # /ig/ig-name/pr/number/owner/repo/branch-name
-      # /ig/ig-name/pr/number/owner/repo/branch-name.merged
 
