@@ -110,10 +110,10 @@ jobs:
           
           cd "${GITHUB_WORKSPACE}/io-clone"
           touch IG_BUILDS.md
-          {
-            cat IG_BUILDS.md | grep -v '${{ inputs.io-path }}'; 
-            printf '%s\n' "[${{ inputs.io-path }}](http://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/)";
-            echo new line;
+          { \
+            cat IG_BUILDS.md | grep -v '${{ inputs.io-path }}'; \
+            printf '%s\n' "[${{ inputs.io-path }}](http://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/)"; \
+            echo new line; \
           } | sort > IG_BUILDS.md.new
           mv -f IG_BUILDS.md.new IG_BUILDS.md
           
