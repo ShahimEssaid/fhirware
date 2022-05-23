@@ -115,12 +115,13 @@ jobs:
             printf '%s\n' "[${{ inputs.io-path }}](http://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/)"; 
             echo some line; 
           } | sort > IG_BUILDS.md.new
+          cat IG_BUILDS.md.new
           mv -f IG_BUILDS.md.new IG_BUILDS.md
           
           printf '%s\n' "[${{ inputs.io-path }}](http://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/)"
           
           git add -A
-          if [[ -z $(git status --porcelain) ]]; then
+          if [[ -z "$(git status --porcelain)" ]]; then
             echo NO changes
           else
             git config --global user.name 'Publisher IO'
