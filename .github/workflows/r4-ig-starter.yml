@@ -85,7 +85,7 @@ jobs:
             echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
             echo "::set-output name=io-repo::${{ env.IO_REPO }}"
             echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
-            echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_ROOT }}/pr/${{ event.number }}/${{ github.event.pull_request.head.repo.full_name }}/${{ github.event.pull_request.head.ref }}"
+            echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_ROOT }}/pr/${{ github.event.number }}/${{ github.event.pull_request.head.repo.full_name }}/${{ github.event.pull_request.head.ref }}"
             # /ig/ig-name/branch/branch-name
             # /ig/ig-name/branch/branch-name.merged
             # /ig/ig-name/pr/number/owner/repo/branch-name
