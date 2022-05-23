@@ -87,7 +87,7 @@ jobs:
         run: |
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
           mkdir -p "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output"
-          echo hello > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
+          echo hello $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
           #docker pull "sessaid/ig-publisher:${{inputs.docker-tag}}"
           #docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
 
@@ -106,7 +106,7 @@ jobs:
         run: |
           which bash
           set -x
-          env | sort
+          #env | sort
           [[ -d "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}" ]] &&  rm -rf "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}"
           mkdir -p "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}"
           cp -ra "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output"/* "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}"
@@ -115,7 +115,7 @@ jobs:
           touch IG_BUILDS.md
           { 
             cat IG_BUILDS.md | grep -v '${{ inputs.io-path }}'; 
-            printf '%s\n' "[${{ inputs.io-path }}](http://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/)";
+            printf '%s  \n' "[${{ inputs.io-path }}](http://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/)";
           } | sort > IG_BUILDS.md.new
           mv -f IG_BUILDS.md.new IG_BUILDS.md
           
