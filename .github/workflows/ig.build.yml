@@ -1,5 +1,7 @@
 name: Build IG with publisher version
-
+defaults:
+  run:
+    shell: bash
 on:
   workflow_call:
     inputs:
@@ -101,7 +103,6 @@ jobs:
 
       - name: Publish IO
         if: inputs.io-repo != ''
-        shell: bash
         run: |
           which bash
           set -x
