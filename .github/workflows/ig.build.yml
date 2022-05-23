@@ -116,10 +116,15 @@ jobs:
           } | sort > IG_BUILDS.md.new
           mv -f IG_BUILDS.md.new IG_BUILDS.md
           
-          git config --global user.name 'Publisher IO'
-          git config --global user.email 'shahim@essaid.com'
           git add -A
-          git commit -m "IG: ${{ inputs.owner-repo }}, ref: ${{ inputs.ref }}  run_id: ${{ github.run_id }}, run_number: ${{ github.run_number }}, run_attempt: ${{ github.run_attempt }}"
-          cat .git/config
-          git remote set-url origin "https://github.com/${{inputs.io-owner}}/${{inputs.io-repo}}"
-          git push
+          if [[ -z $(git status -s) ]]; then
+            echo NO changes
+          else
+            git config --global user.name 'Publisher IO'
+            git config --global user.email 'shahim@essaid.com'
+            git commit -m "IG: ${{ inputs.owner-repo }}, ref: ${{ inputs.ref }}  run_id: ${{ github.run_id }}, run_number: ${{ github.run_number }}, run_attempt: ${{ github.run_attempt }}"
+            cat .git/config
+            git remote set-url origin "https://github.com/${{inputs.io-owner}}/${{inputs.io-repo}}"
+            git push
+          fi
+

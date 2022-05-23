@@ -69,7 +69,7 @@ jobs:
           echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
           echo "::set-output name=io-repo::${{ env.IO_REPO }}"
           echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
-          echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}/${{ env.IG_ROOT }}/branch/${{ github.ref }}"
+          echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_ROOT }}/branch/${{ github.ref }}"
           
           
 
