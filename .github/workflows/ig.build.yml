@@ -115,7 +115,7 @@ jobs:
             printf '%s\n' "[${{ inputs.io-path }}](http://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/)"; 
             echo some line; 
           ) | sort > IG_BUILDS.md.new
-          cat IG_BUILDS.md.new
+          echo hello >> IG_BUILDS.md.new
           mv -f IG_BUILDS.md.new IG_BUILDS.md
           
           printf '%s\n' "[${{ inputs.io-path }}](http://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/)"
