@@ -83,7 +83,7 @@ jobs:
 
       - name: Docker build IG
         run: |
-          echo Running IG build
+          echo Running IG build with inputs: ${{ toJSON(inputs) }}
           mkdir -p "${GITHUB_WORKSPACE}/ig/${{inputs.ig-root}}/output"
           echo hello > "${GITHUB_WORKSPACE}/ig/${{inputs.ig-root}}/output/index.html"
           #docker pull "sessaid/ig-publisher:${{inputs.docker-tag}}"
