@@ -101,7 +101,9 @@ jobs:
 
       - name: Publish IO
         if: inputs.io-repo != ''
+        shell: bash
         run: |
+          which bash
           set -x
           env | sort
           rm -rf "${GITHUB_WORKSPACE}/io-clone/${{ inputs.io-path }}" || true
@@ -110,12 +112,12 @@ jobs:
           
           cd "${GITHUB_WORKSPACE}/io-clone"
           touch IG_BUILDS.md
-          ( 
-            cat IG_BUILDS.md | grep -v '${{ inputs.io-path }}'; 
-            printf '%s\n' "[${{ inputs.io-path }}](http://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/)"; 
-            echo some line; 
-          ) | sort > IG_BUILDS.md.new
           echo hello >> IG_BUILDS.md.new
+          { 
+            cat IG_BUILDS.md | grep -v '${{ inputs.io-path }}'; 
+            printf '%s\n' "[${{ inputs.io-path }}](http://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/)";
+            echo some line; 
+          } | sort > IG_BUILDS.md.new
           mv -f IG_BUILDS.md.new IG_BUILDS.md
           
           printf '%s\n' "[${{ inputs.io-path }}](http://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/)"
