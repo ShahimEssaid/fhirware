@@ -85,10 +85,11 @@ jobs:
 
       - name: Docker build IG
         run: |
+          set -x
           cd ig-clone
           cat .git/config
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
-          mkdir -p ${{inputs.ig-root}}/output"
+          mkdir -p "${{inputs.ig-root}}/output"
           echo hello $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
           #docker pull "sessaid/ig-publisher:${{inputs.docker-tag}}"
           #docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
