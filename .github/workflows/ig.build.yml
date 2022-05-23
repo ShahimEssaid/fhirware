@@ -107,7 +107,7 @@ jobs:
         run: |
           set -x
           cd "${GITHUB_WORKSPACE}/io-clone"
-          cat .git/config
+          #cat .git/config
           [[ -d "${{ inputs.io-path }}" ]] &&  rm -rf "${{ inputs.io-path }}"
           mkdir -p "${{ inputs.io-path }}"
           cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}"
@@ -125,8 +125,6 @@ jobs:
             git config --global user.name 'Publisher IO'
             git config --global user.email 'shahim@essaid.com'
             git commit -m "IG: ${{ inputs.owner-repo }}, ref: ${{ inputs.ref }}  run_id: ${{ github.run_id }}, run_number: ${{ github.run_number }}, run_attempt: ${{ github.run_attempt }}"
-            #cat .git/config
-            #git remote set-url origin "https://github.com/${{inputs.io-owner}}/${{inputs.io-repo}}"
             git push
           fi
 
@@ -135,3 +133,16 @@ jobs:
         # we try to merge and build again
         run: |
           echo doing base merge and build
+          cd ig-clone
+          git clean -fdx
+          git remote add upstream https://github.com/${{ github.repository }}
+          git fetch --unshallow
+          git checkout -b upstream-${{ inputs.base-ref }} --track  upstream/${{ inputs.base-ref }}
+          if git merge "${{ inputs.ref }}"; then
+            echo merge was successful
+          else
+            echo merge has conflicts
+          fi
+          cat .git/config
+          
+          
