@@ -132,11 +132,12 @@ jobs:
         if: inputs.base-ref != ''
         # we try to merge and build again
         run: |
+          set -x
           echo doing base merge and build
           cd ig-clone
-          git clean -fdx
-          git remote add upstream https://github.com/${{ github.repository }}
           git fetch --unshallow
+          git clean -fdx
+          git remote add upstream "https://github.com/${{ github.repository }}"
           git checkout -b upstream-${{ inputs.base-ref }} --track  upstream/${{ inputs.base-ref }}
           if git merge "${{ inputs.ref }}"; then
             echo merge was successful
