@@ -4,4 +4,4 @@
 * https://github.com/FHIR/ig-guidance
 
 
-trigger wf ...
+trigger wf ..
