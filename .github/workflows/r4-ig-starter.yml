@@ -6,41 +6,111 @@
 #
 
 
+# TODOs
+# TODO: add a setting to control the PR without merging vs using the GH test merge when a PR is mergable
+#   do both if mergeable?
+# TODO: add a setting to control fork RPs
 
 name: CI
+env:
+  IG_ROOT: "ig/r4-ig-starter"
+  PUBLISHER_ARGS: "-ig ig.ini"
+  DOCKER_TAG: latest
+  IO_OWNER: ShahimEssaid
+  IO_REPO: tmp-io
+  IO_BRANCH: gh-pages
+  IO_PATH_PREFIX: ''
 
-# Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [ main, master ]
     paths:
       - ig/r4-ig-starter/**
-
-      # Allows you to run this workflow manually from the Actions tab
-  #workflow_dispatch:
+  pull_request_target:
+    paths:
+      - ig/r4-ig-starter/**
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
   # Do any setup needed to create job output parameters needed to the later build job
-#  setup:
-#      name: Setup
-#      runs-on: ubuntu-latest
-#      steps:
-#        - id: step-1
-#          run: |
-#            echo step-1 setup
+  vars:
+    name: Build vars
+    runs-on: ubuntu-latest
+    outputs:
+      owner-repo: ${{ steps.vars.outputs.owner-repo }}
+      ref: ${{ steps.vars.outputs.ref }}
+      depth: ${{ steps.vars.outputs.depth }}
+      try-merge: ${{ steps.vars.outputs.try-merge }}
+      base-ref: ${{ steps.vars.outputs.base-ref }}
+      pr-number: ${{ steps.vars.outputs.pr-number }}
+      ig-root: ${{ steps.vars.outputs.ig-root }}
+      publisher-args: ${{ steps.vars.outputs.publisher-args }}
+      docker-tag: ${{ steps.vars.outputs.docker-tag }}
+      io-owner: ${{ steps.vars.outputs.io-owner }}
+      io-repo: ${{ steps.vars.outputs.io-repo }}
+      io-branch: ${{ steps.vars.outputs.io-branch }}
+      io-path: ${{ steps.vars.outputs.io-path }}
+
+    steps:
+      - id: vars
+        if: ${{ github.event_name }} == "push"
+        run: |
+          echo "::set-output name=owner-repo::${{ github.repository }}"
+          echo "::set-output name=ref::${{ github.ref }}"
+          echo "::set-output name=depth::0"
+          echo "::set-output name=try-merge::false"
+          echo "::set-output name=base-ref::"
+          echo "::set-output name=pr-number::"
+          echo "::set-output name=ig-root::${{ env.IG_ROOT }}"
+          echo "::set-output name=publisher-args:${{ env.PUBLISHER_ARGS }}"
+          echo "::set-output name=docker-tag:${{ env.DOCKER_TAG }}"
+          echo "::set-output name=io-owner:${{ env.IO_OWNER }}"
+          echo "::set-output name=io-repo:${{ env.IO_REPO }}"
+          echo "::set-output name=io-branch:${{ env.IO_BRANCH }}"
+          echo "::set-output name=io-path:${{ env.IO_PATH_PREFIX }}/${{ env.IG_ROOT }}/branch/${{ github.ref }}"
+          
+          
+
+      - id: pr-target-setup
+        if: ${{ github.event_name }} == "pull_request_target"
+
+      - id: step-1
+        run: |
+            
+            #  if it's just a push, we only build the branch
+            
+            
+            # if it is a pull request, we build the branch, and check if we can merge with default branch and build as well.
+            
 
   build:
-    #needs: setup
+    needs: vars
     uses: ./.github/workflows/ig.build.yml
     secrets:
       io-token: ${{ secrets.PUBLISHER_IO }}
     with:
-      ig-root: ${{ 'ig/r4-ig-starter' }}
-      publisher-args: ${{ '-ig ig.ini' }}
-      docker-tag: ${{ 'latest' }}
-      io-repo: ShahimEssaid/tmp-io
-      io-path: test/ig
+      owner-repo: ${{ needs.vars.outputs.owner-repo }}
+      ref: ${{ needs.vars.outputs.ref }}
+      depth: ${{ needs.vars.outputs.depth }}
+
+      ig-root: ${{ needs.vars.outputs.ig-root }}
+      publisher-args: ${{ needs.vars.outputs.publisher-args }}
+      docker-tag: ${{ needs.vars.outputs.docker-tag }}
+
+      try-merge: ${{ needs.vars.outputs.try-merge }}
+      base-ref: ${{ needs.vars.outputs.base-ref }}
+
+
+      io-owner: ${{ needs.vars.outputs.io-owner }}
+      io-repo: ${{ needs.vars.outputs.io-repo }}
+      io-branch: ${{ needs.vars.outputs.io-branch }}
+      io-path: ${{ needs.vars.outputs.io-path }}
+
+      # /ig/ig-name/branch/branch-name
+      # /ig/ig-name/branch/branch-name.merged
+
+      # /ig/ig-name/pr/number/owner/repo/branch-name
+      # /ig/ig-name/pr/number/owner/repo/branch-name.merged
 
