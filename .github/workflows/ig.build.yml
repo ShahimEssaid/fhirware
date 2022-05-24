@@ -86,7 +86,7 @@ jobs:
         run: |
           set -x
           cd ig-clone
-          chown -R $USER:$USER .
+          chown -R $USER:$USER "${{ inputs.ig-root }}"
           cat .git/config
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
           #mkdir -p "${{inputs.ig-root}}/output"
