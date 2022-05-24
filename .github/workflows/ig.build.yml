@@ -123,7 +123,7 @@ jobs:
           fi
           { 
             cat IG_BUILDS.md |  grep -v '${{ inputs.io-path }}' ; 
-            printf '%s  \n' "[${{ inputs.io-path }}](https://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/index.html)";
+            printf '%s  \n' "[${{ inputs.io-path }}](https://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}";
           } | sort > IG_BUILDS.md.new
           mv -f IG_BUILDS.md.new IG_BUILDS.md
 
@@ -141,7 +141,7 @@ jobs:
           git fetch --unshallow
           git clean -fdx
           git remote add upstream "https://github.com/${{ github.repository }}"
-          cat .git/config
+          #cat .git/config
           git fetch --all
           git checkout -b upstream-${{ inputs.base-ref }} --track  "upstream/${{ inputs.base-ref }}"
           if git merge "${{ inputs.ref }}"; then
@@ -164,7 +164,7 @@ jobs:
           cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}.merged"
           { 
             cat IG_BUILDS.md;
-            printf '%s  \n' "[${{ inputs.io-path }}.merged](https://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}.merged/index.html)";
+            printf '%s  \n' "[${{ inputs.io-path }}.merged](https://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}-merged)";
           } | sort > IG_BUILDS.md.new
           mv -f IG_BUILDS.md.new IG_BUILDS.md
 
