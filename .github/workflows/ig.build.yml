@@ -4,9 +4,6 @@ defaults:
   run:
     shell: bash
 
-concurrency:
-  group: ig-build
-
 on:
   workflow_call:
     inputs:
