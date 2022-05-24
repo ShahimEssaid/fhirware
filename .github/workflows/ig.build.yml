@@ -85,6 +85,7 @@ jobs:
       - name: Build IG branch
         run: |
           set -x
+          env | sort
           cd ig-clone
           cat .git/config
           git status
@@ -144,6 +145,7 @@ jobs:
             echo merge was successful
             #mkdir -p "${{inputs.ig-root}}/output"
             #echo hello merged branch build $(date) > "${{inputs.ig-root}}/output/index.html"
+            who
             docker run --rm --user $USER:$USER--volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
           else
             echo merge has conflicts
