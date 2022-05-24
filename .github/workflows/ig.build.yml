@@ -133,6 +133,7 @@ jobs:
           cd ig-clone
           git status
           ls -la
+          ls -la ig/r4-ig-starter/output/
           git fetch --unshallow
           git clean -fdx
           git remote add upstream "https://github.com/${{ github.repository }}"
