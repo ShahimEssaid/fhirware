@@ -84,13 +84,13 @@ jobs:
 
       - name: Build IG branch
         run: |
-          set -x
-          env | sort
-          id
+          #set -x
+          #env | sort
+          #id
           cd ig-clone
-          cat .git/config
-          git status
-          ls -la
+          #cat .git/config
+          #git status
+          #ls -la
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
           #mkdir -p "${{inputs.ig-root}}/output"
           #echo hello branch build $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
@@ -110,11 +110,11 @@ jobs:
       - name: Publish branch
         if: inputs.io-repo != ''
         run: |
-          set -x
+          #set -x
           cd io-clone
-          cat .git/config
-          git status
-          ls -la
+          #cat .git/config
+          #git status
+          #ls -la
           [[ -d "${{ inputs.io-path }}" ]] &&  rm -rf "${{ inputs.io-path }}"
           mkdir -p "${{ inputs.io-path }}"
           cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}"
@@ -130,12 +130,12 @@ jobs:
         # try to merge and build again
         # TODO: try to optimize the full fetch
         run: |
-          set -x
+          #set -x
           echo doing base merge and build
           cd ig-clone
-          git status
-          ls -la
-          ls -la ig/r4-ig-starter/output/
+          #git status
+          #ls -la
+          #ls -la ig/r4-ig-starter/output/
           git fetch --unshallow
           git clean -fdx
           git remote add upstream "https://github.com/${{ github.repository }}"
@@ -155,7 +155,7 @@ jobs:
       - name: Publish merged
         if: inputs.base-ref != '' && inputs.io-repo != ''
         run: |  
-          set -x
+          #set -x
           cd io-clone
           [[ -d "${{ inputs.io-path }}.merged" ]] &&  rm -rf "${{ inputs.io-path }}.merged"
           mkdir -p "${{ inputs.io-path }}.merged"
@@ -169,7 +169,7 @@ jobs:
       - name: Push IO
         if: inputs.io-repo != ''
         run: |
-          set -x
+          #set -x
           cd io-clone
           git add -A
           if [[ -z "$(git status --porcelain)" ]]; then
