@@ -118,9 +118,11 @@ jobs:
           [[ -d "${{ inputs.io-path }}" ]] &&  rm -rf "${{ inputs.io-path }}"
           mkdir -p "${{ inputs.io-path }}"
           cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}"
-          [[ -f  "IG_BUILDS.md" ]] || echo '# IG Builds  ' > IG_BUILDS.md
+          if [[ ! -f  "IG_BUILDS.md" ]]; then
+            echo '# IG Builds  ' > IG_BUILDS.md
+          fi
           { 
-            cat IG_BUILDS.md | { grep -v '${{ inputs.io-path }}' || true } ; 
+            cat IG_BUILDS.md |  grep -v '${{ inputs.io-path }}' ; 
             printf '%s  \n' "[${{ inputs.io-path }}](http://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/)";
           } | sort > IG_BUILDS.md.new
           mv -f IG_BUILDS.md.new IG_BUILDS.md
