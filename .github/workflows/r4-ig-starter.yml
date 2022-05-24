@@ -1,28 +1,21 @@
-# This workflow is meant to build an IG under the /ig folder if any files are changed for
-# that specific IG. The pattern, for now, is that this workflow''s file name matches the
-# IG folder's name and does what is needed to build and publish the IG.
+name: IG build entry workflow
 
-# Features:
-#
-
-
-# TODOs
-# TODO: add a setting to control the PR without merging vs using the GH test merge when a PR is mergable
-#   do both if mergeable?
-# TODO: add a setting to control fork RPs
-
-name: CI
 env:
   IG_ROOT: "ig/r4-ig-starter"
-  PUBLISHER_ARGS: "-ig ig.ini"
   DOCKER_TAG: latest
+  PUBLISHER_ARGS: "-ig ig.ini"
   IO_OWNER: ShahimEssaid
   IO_REPO: tmp-io
   IO_BRANCH: gh-pages
   IO_PATH_PREFIX: ''
+
 defaults:
   run:
     shell: bash
+
+concurrency:
+  group: ig-build
+
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
