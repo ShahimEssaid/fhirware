@@ -87,6 +87,8 @@ jobs:
           set -x
           cd ig-clone
           cat .git/config
+          git status
+          ls -la
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
           #mkdir -p "${{inputs.ig-root}}/output"
           #echo hello branch build $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
@@ -108,7 +110,9 @@ jobs:
         run: |
           set -x
           cd io-clone
-          #cat .git/config
+          cat .git/config
+          git status
+          ls -la
           [[ -d "${{ inputs.io-path }}" ]] &&  rm -rf "${{ inputs.io-path }}"
           mkdir -p "${{ inputs.io-path }}"
           cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}"
@@ -127,6 +131,8 @@ jobs:
           set -x
           echo doing base merge and build
           cd ig-clone
+          git status
+          ls -la
           git fetch --unshallow
           git clean -fdx
           git remote add upstream "https://github.com/${{ github.repository }}"
