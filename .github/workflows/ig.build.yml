@@ -93,7 +93,7 @@ jobs:
           #mkdir -p "${{inputs.ig-root}}/output"
           #echo hello branch build $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
           docker pull "sessaid/ig-publisher:${{inputs.docker-tag}}"
-          docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
+          docker run --rm --user $USER:$USER --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
 
       # Publish if requested
       - name: Checkout IO branch
@@ -144,7 +144,7 @@ jobs:
             echo merge was successful
             #mkdir -p "${{inputs.ig-root}}/output"
             #echo hello merged branch build $(date) > "${{inputs.ig-root}}/output/index.html"
-            docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
+            docker run --rm --user $USER:$USER--volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
           else
             echo merge has conflicts
           fi
