@@ -84,7 +84,6 @@ jobs:
           repository: ${{ inputs.owner-repo }}
           ref: ${{ inputs.ref }}
           path: ig-clone
-          fetch-depth: ${{ inputs.depth }}
 
       - name: Build IG branch
         run: |
@@ -92,7 +91,7 @@ jobs:
           cd ig-clone
           cat .git/config
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
-          mkdir -p "${{inputs.ig-root}}/output"
+          #mkdir -p "${{inputs.ig-root}}/output"
           #echo hello branch build $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
           docker pull "sessaid/ig-publisher:${{inputs.docker-tag}}"
           docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
@@ -111,7 +110,7 @@ jobs:
         if: inputs.io-repo != ''
         run: |
           set -x
-          cd "${GITHUB_WORKSPACE}/io-clone"
+          cd io-clone
           #cat .git/config
           [[ -d "${{ inputs.io-path }}" ]] &&  rm -rf "${{ inputs.io-path }}"
           mkdir -p "${{ inputs.io-path }}"
@@ -122,16 +121,6 @@ jobs:
             printf '%s  \n' "[${{ inputs.io-path }}](http://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/)";
           } | sort > IG_BUILDS.md.new
           mv -f IG_BUILDS.md.new IG_BUILDS.md
-          
-          git add -A
-          if [[ -z "$(git status --porcelain)" ]]; then
-            echo NO changes
-          else
-            git config --global user.name 'Publisher IO'
-            git config --global user.email 'shahim@essaid.com'
-            git commit -m "IG: ${{ inputs.owner-repo }}, ref: ${{ inputs.ref }}  run_id: ${{ github.run_id }}, run_number: ${{ github.run_number }}, run_attempt: ${{ github.run_attempt }}"
-            git push
-          fi
 
       - name: If merge
         if: inputs.base-ref != ''
@@ -149,12 +138,38 @@ jobs:
           git checkout -b upstream-${{ inputs.base-ref }} --track  "upstream/${{ inputs.base-ref }}"
           if git merge "${{ inputs.ref }}"; then
             echo merge was successful
+            #mkdir -p "${{inputs.ig-root}}/output"
+            #echo hello merged branch build $(date) > "${{inputs.ig-root}}/output/index.html"
+            docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
           else
             echo merge has conflicts
           fi
-          cat .git/config
+          
+      - name: Publish merged
+        if: inputs.base-ref != '' && inputs.io-repo != ''
+        run: |  
+          set -x
+          cd io-clone
+          [[ -d "${{ inputs.io-path }}.merged" ]] &&  rm -rf "${{ inputs.io-path }}.merged"
+          mkdir -p "${{ inputs.io-path }}.merged"
+          cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}.merged"
+          { 
+            cat IG_BUILDS.md;
+            printf '%s  \n' "[${{ inputs.io-path }}.merged](http://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}.merged/)";
+          } | sort > IG_BUILDS.md.new
+          mv -f IG_BUILDS.md.new IG_BUILDS.md
 
-          mkdir -p "${{inputs.ig-root}}/output"
-          echo hello merged branch build $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
-          
-          
+      - name: Push IO
+        if: inputs.io-repo != ''
+        run: |
+          set -x
+          cd io-clone
+          git add -A
+          if [[ -z "$(git status --porcelain)" ]]; then
+            echo NO changes
+          else
+            git config --global user.name 'Publisher IO'
+            git config --global user.email 'shahim@essaid.com'
+            git commit -m "IG: ${{ inputs.owner-repo }}, ref: ${{ inputs.ref }}  run_id: ${{ github.run_id }}, run_number: ${{ github.run_number }}, run_attempt: ${{ github.run_attempt }}"
+            git push
+          fi
