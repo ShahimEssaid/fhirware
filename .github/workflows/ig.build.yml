@@ -159,9 +159,9 @@ jobs:
         run: |  
           #set -x
           cd io-clone
-          [[ -d "${{ inputs.io-path }}.merged" ]] &&  rm -rf "${{ inputs.io-path }}.merged"
-          mkdir -p "${{ inputs.io-path }}.merged"
-          cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}.merged"
+          [[ -d "${{ inputs.io-path }}.merged" ]] &&  rm -rf "${{ inputs.io-path }}-merged"
+          mkdir -p "${{ inputs.io-path }}-merged"
+          cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}-merged"
           { 
             cat IG_BUILDS.md;
             printf '%s  \n' "[${{ inputs.io-path }}-merged](https://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}-merged)";
