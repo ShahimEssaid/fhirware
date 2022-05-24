@@ -86,6 +86,7 @@ jobs:
         run: |
           set -x
           env | sort
+          id
           cd ig-clone
           cat .git/config
           git status
