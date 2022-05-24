@@ -164,7 +164,7 @@ jobs:
           cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}--merged"
           { 
             cat IG_BUILDS.md;
-            printf '%s  \n' "[${{ inputs.io-path }}-merged](https://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}--merged/index.html)";
+            printf '%s  \n' "[${{ inputs.io-path }}--merged](https://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}--merged/index.html)";
           } | sort > IG_BUILDS.md.new
           mv -f IG_BUILDS.md.new IG_BUILDS.md
 
