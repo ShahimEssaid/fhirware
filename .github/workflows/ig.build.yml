@@ -152,6 +152,7 @@ jobs:
             docker run --rm --user $(id -u):$(id -u) --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
           else
             echo merge has conflicts
+            git merge --abort
           fi
           
       - name: Publish merged
