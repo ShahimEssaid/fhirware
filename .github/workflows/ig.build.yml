@@ -110,7 +110,7 @@ jobs:
       - name: Publish branch
         if: inputs.io-repo != ''
         run: |
-          #set -x
+          set -x
           cd io-clone
           #cat .git/config
           #git status
