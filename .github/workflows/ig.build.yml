@@ -147,7 +147,7 @@ jobs:
             #mkdir -p "${{inputs.ig-root}}/output"
             #echo hello merged branch build $(date) > "${{inputs.ig-root}}/output/index.html"
             who
-            docker run --rm --user $(id -u):$(id -u)--volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
+            docker run --rm --user $(id -u):$(id -u) --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
           else
             echo merge has conflicts
           fi
