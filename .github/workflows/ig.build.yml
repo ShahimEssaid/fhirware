@@ -31,24 +31,24 @@ on:
         required: true
         type: string
 
-      run-sushi:
-        description: If sushi should run
-        type: string
-        default: "true"
+#      run-sushi:
+#        description: If sushi should run
+#        type: string
+#        default: "true"
 
-      sushi-args:
-        description: The parameters to pass to the sushi command. Keep in mind that the IG root folder is at /ig.
-        type: string
+#      sushi-args:
+#        description: The parameters to pass to the sushi command. Keep in mind that the IG root folder is at /ig.
+#        type: string
 
       docker-publisher-tag:
         description: "The Docker publisher tag to use from: https://hub.docker.com/repository/docker/sessaid/ig-publisher/tags"
         type: string
         default: latest
 
-      docker-sushi-tag:
-        description: "The Docker SUSHI tag to use from: https://hub.docker.com/repository/docker/sessaid/sushi/tags"
-        type: string
-        default: latest
+#      docker-sushi-tag:
+#        description: "The Docker SUSHI tag to use from: https://hub.docker.com/repository/docker/sessaid/sushi/tags"
+#        type: string
+#        default: latest
 
       base-ref:
         description: A base ref if the ref should be merged into it to try a merge build. This is used for PRs.
@@ -88,13 +88,13 @@ jobs:
           ref: ${{ inputs.ref }}
           path: ig-clone
 
-      - name Run SUSHI if enabled
-        if: inputs.run-sushi == "true"
-        run: |
-          cd ig-clone
-          if [[ -d "input/fsh ]]; then
-            docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/sushi:${{inputs.docker-sushi-tag}}"  ${{ inputs.sushi-args }}
-          fi
+#      - name Run SUSHI if enabled
+#        if: inputs.run-sushi == "true"
+#        run: |
+#          cd ig-clone
+#          if [[ -d "input/fsh ]]; then
+#            docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/sushi:${{inputs.docker-sushi-tag}}"  ${{ inputs.sushi-args }}
+#          fi
 
       - name: Build IG branch
         run: |
