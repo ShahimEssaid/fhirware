@@ -89,7 +89,8 @@ on:
 jobs:
   docker-build:
     runs-on: ubuntu-latest
-    if: ${{ inputs.expected-event }} == ${{ inputs.event }}
+    #if: ${{ inputs.expected-event }} == ${{ inputs.event }}
+    if: a == b
     steps:
       - name: Checkout IG
         uses: actions/checkout@v3
