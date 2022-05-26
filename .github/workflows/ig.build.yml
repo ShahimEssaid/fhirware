@@ -104,7 +104,7 @@ jobs:
           git config --global user.name 'Publisher IO'
           git config --global user.email 'shahim@essaid.com'
           cd ig-clone
-          echo "::set-output name=sha::$(git ref-parse HEAD)"
+          echo "::set-output name=sha::$(git rev-parse HEAD)"
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
           #mkdir -p "${{inputs.ig-root}}/output"; echo hello branch build $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
           #docker pull "sessaid/ig-publisher:${{inputs.docker-publisher-tag}}"
@@ -152,7 +152,7 @@ jobs:
           git fetch --all
           git checkout -b upstream-${{ inputs.base-ref }} --track  "upstream/${{ inputs.base-ref }}"
           if git merge "${{ inputs.ref }}"; then
-            echo "::set-output name=sha::$(git ref-parse HEAD)"
+            echo "::set-output name=sha::$(git rev-parse HEAD)"
             echo merge was successful
             #mkdir -p "${{inputs.ig-root}}/output"; echo hello merged branch build $(date) > "${{inputs.ig-root}}/output/index.html"
             docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-publisher-tag}}"  ${{ inputs.publisher-args }}
