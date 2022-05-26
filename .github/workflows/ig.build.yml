@@ -73,7 +73,7 @@ on:
         type: string
 
     secrets:
-      ouput-token:
+      output-token:
         description: A read/write token to the publication repository.
         required: true
 jobs:
