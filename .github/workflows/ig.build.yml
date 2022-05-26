@@ -72,15 +72,15 @@ on:
         description: "A path to publish under. If not set, a default is calculated. TODO: document this."
         type: string
 
-      expected-event:
-        description: The expected event type for running this build. It's needed for the if condition
-        type: string
-        required: true
-
-      event:
-        description: The actual event type.
-        type: string
-        required: true
+#      expected-event:
+#        description: The expected event type for running this build. It's needed for the if condition
+#        type: string
+#        required: true
+#
+#      event:
+#        description: The actual event type.
+#        type: string
+#        required: true
 
     secrets:
       output-token:
@@ -89,7 +89,6 @@ on:
 jobs:
   docker-build:
     runs-on: ubuntu-latest
-    if: ${{'a'}} == ${{'b'}}
     steps:
       - name: Checkout IG
         uses: actions/checkout@v3
