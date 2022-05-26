@@ -122,13 +122,13 @@ jobs:
       owner-repo: ${{ github.repository }}
       ref: ${{ github.ref_name }}
 
-      ig-root: ${{ env.IG_ROOT }}
-      publisher-args: ${{ env.PUBLISHER_ARGS }}
-      docker-publisher-tag: ${{ env.DOCKER_PUBLISHER_TAG }}
+      ig-root: "ig/r4-ig-starter"
+      publisher-args: "-ig /ig/ig.ini"
+      docker-publisher-tag: latest
       base-ref: ''
 
-      io-owner: ${{ env.IO_OWNER }}
-      io-repo: ${{ env.IO_REPO }}
-      io-branch: ${{ env.IO_BRANCH }}
-      io-path: ${{ env.IO_PATH_PREFIX }}${{ env.IG_ROOT }}/branch/${{ github.ref_name }}
+      io-owner: ShahimEssaid
+      io-repo: tmp-io
+      io-branch: gh-pages
+      io-path: "ig/r4-ig-starter/branch/${{ github.ref_name }}"
 
