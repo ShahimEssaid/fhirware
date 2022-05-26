@@ -92,6 +92,8 @@ jobs:
         run: |
           set -x
           cd ig-clone
+          ls -la
+          ls -la ig/r4-ig-starter
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
           #mkdir -p "${{inputs.ig-root}}/output"; echo hello branch build $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
           #docker pull "sessaid/ig-publisher:${{inputs.docker-publisher-tag}}"
