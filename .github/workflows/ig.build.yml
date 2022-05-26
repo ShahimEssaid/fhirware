@@ -98,13 +98,13 @@ jobs:
           path: ig-clone
 
       - name: Build IG branch
+        id: branch
         run: |
           set -x
           git config --global user.name 'Publisher IO'
           git config --global user.email 'shahim@essaid.com'
           cd ig-clone
-          ls -la
-          ls -la ig/r4-ig-starter
+          echo "::set-output name=sha::$(git ref-parse HEAD)"
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
           #mkdir -p "${{inputs.ig-root}}/output"; echo hello branch build $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
           #docker pull "sessaid/ig-publisher:${{inputs.docker-publisher-tag}}"
@@ -133,11 +133,12 @@ jobs:
           fi
           { 
             cat IG_BUILDS.md |  grep -v '${{ inputs.io-path }}' ; 
-            printf '%s  \n' "[${{ inputs.io-path }}](https://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/index.html)";
+            printf '%s  \n' "[${{ inputs.io-path }}](https://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/index.html?version=${{steps.branch.outputs.sha}})";
           } | sort > IG_BUILDS.md.new
           mv -f IG_BUILDS.md.new IG_BUILDS.md
 
       - name: If merge
+        id: merge
         if: inputs.base-ref != ''
         # try to merge and build again
         # TODO: try to optimize the full fetch
@@ -151,6 +152,7 @@ jobs:
           git fetch --all
           git checkout -b upstream-${{ inputs.base-ref }} --track  "upstream/${{ inputs.base-ref }}"
           if git merge "${{ inputs.ref }}"; then
+            echo "::set-output name=sha::$(git ref-parse HEAD)"
             echo merge was successful
             #mkdir -p "${{inputs.ig-root}}/output"; echo hello merged branch build $(date) > "${{inputs.ig-root}}/output/index.html"
             docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-publisher-tag}}"  ${{ inputs.publisher-args }}
@@ -169,7 +171,7 @@ jobs:
           cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}--merged"
           { 
             cat IG_BUILDS.md;
-            printf '%s  \n' "[${{ inputs.io-path }}--merged](https://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}--merged/index.html)";
+            printf '%s  \n' "[${{ inputs.io-path }}--merged](https://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}--merged/index.html?version=${{steps.merge.outputs.sha}})";
           } | sort > IG_BUILDS.md.new
           mv -f IG_BUILDS.md.new IG_BUILDS.md
 
@@ -182,6 +184,6 @@ jobs:
           if [[ -z "$(git status --porcelain)" ]]; then
             echo NO changes
           else
-            git commit -m "IG: ${{ inputs.owner-repo }}, ref: ${{ inputs.ref }}  run_id: ${{ github.run_id }}, run_number: ${{ github.run_number }}, run_attempt: ${{ github.run_attempt }}"
+            git commit -m "IG: ${{ inputs.owner-repo }}, ref: ${{ inputs.ref }}  run_id: ${{ github.run_id }}, run_number: ${{ github.run_number }}, run_attempt: ${{ github.run_attempt }} with branch SHA: ?version=${{steps.branch.outputs.sha}} and merge SHA: ?version=${{steps.merge.outputs.sha}}"
             git push
           fi
