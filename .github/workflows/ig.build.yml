@@ -88,14 +88,6 @@ jobs:
           ref: ${{ inputs.ref }}
           path: ig-clone
 
-#      - name Run SUSHI if enabled
-#        if: inputs.run-sushi == "true"
-#        run: |
-#          cd ig-clone
-#          if [[ -d "input/fsh ]]; then
-#            docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/sushi:${{inputs.docker-sushi-tag}}"  ${{ inputs.sushi-args }}
-#          fi
-
       - name: Build IG branch
         run: |
           #set -x
@@ -103,7 +95,7 @@ jobs:
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
           #mkdir -p "${{inputs.ig-root}}/output"; echo hello branch build $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
           #docker pull "sessaid/ig-publisher:${{inputs.docker-publisher-tag}}"
-          docker run --rm --user $(id -u):$(id -u) --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-publisher-tag}}"  ${{ inputs.publisher-args }}
+          docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-publisher-tag}}"  ${{ inputs.publisher-args }}
 
       # Publish if requested
       - name: Checkout IO branch
