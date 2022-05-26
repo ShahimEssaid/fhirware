@@ -90,7 +90,7 @@ jobs:
 
       - name: Build IG branch
         run: |
-          #set -x
+          set -x
           cd ig-clone
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
           #mkdir -p "${{inputs.ig-root}}/output"; echo hello branch build $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"

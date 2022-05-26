@@ -4,7 +4,7 @@ env:
   IG_ROOT: "ig/r4-ig-starter"
   DOCKER_PUBLISHER_TAG: latest
   DOCKER_SUSHI_TAG: ''
-  PUBLISHER_ARGS: "-ig ig.ini"
+  PUBLISHER_ARGS: "-ig /ig/ig.ini"
   IO_OWNER: ShahimEssaid
   IO_REPO: tmp-io
   IO_BRANCH: gh-pages
