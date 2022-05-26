@@ -152,7 +152,7 @@ jobs:
           git remote add upstream "https://github.com/${{ github.repository }}"
           git fetch --all
           git checkout -b upstream-${{ inputs.base-ref }} --track  "upstream/${{ inputs.base-ref }}"
-          if ! git merge-base --is-ancestor ${{ inputs.base-ref }} ${{ inputs.ref }}; then
+          if ! git merge-base --is-ancestor upstream-${{ inputs.base-ref }} upstream/${{ inputs.base-ref }}; then
             if git merge "${{ inputs.ref }}"; then
               echo "::set-output name=sha::$(git rev-parse HEAD)"
               echo merge was successful
@@ -162,6 +162,7 @@ jobs:
               echo merge has conflicts
               git merge --abort
             fi
+            echo "::set-output name=skip::false"
           else
             echo "::set-output name=skip::true"
           fi
