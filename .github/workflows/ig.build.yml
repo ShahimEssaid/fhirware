@@ -194,6 +194,6 @@ jobs:
           if [[ -z "$(git status --porcelain)" ]]; then
             echo NO changes
           else
-            git commit -m "IG: ${{ inputs.owner-repo }}, ref: ${{ inputs.ref }}  run_id: ${{ github.run_id }}, run_number: ${{ github.run_number }}, run_attempt: ${{ github.run_attempt }} with branch SHA: ?version=${{steps.branch.outputs.sha}} and merge SHA: ?version=${{steps.merge.outputs.sha}}"
+            git commit -m "IG: ${{ inputs.owner-repo }}, ref: ${{ inputs.ref }}  run_id: ${{ github.run_id }}, run_number: ${{ github.run_number }}, run_attempt: ${{ github.run_attempt }} with branch SHA: ${{steps.branch.outputs.sha}} and merge SHA: ${{steps.merge.outputs.sha}}"
             git push
           fi
