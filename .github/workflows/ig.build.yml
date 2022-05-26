@@ -100,6 +100,8 @@ jobs:
       - name: Build IG branch
         run: |
           set -x
+          git config --global user.name 'Publisher IO'
+          git config --global user.email 'shahim@essaid.com'
           cd ig-clone
           ls -la
           ls -la ig/r4-ig-starter
@@ -180,8 +182,6 @@ jobs:
           if [[ -z "$(git status --porcelain)" ]]; then
             echo NO changes
           else
-            git config --global user.name 'Publisher IO'
-            git config --global user.email 'shahim@essaid.com'
             git commit -m "IG: ${{ inputs.owner-repo }}, ref: ${{ inputs.ref }}  run_id: ${{ github.run_id }}, run_number: ${{ github.run_number }}, run_attempt: ${{ github.run_attempt }}"
             git push
           fi
