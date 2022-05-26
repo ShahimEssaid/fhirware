@@ -152,15 +152,19 @@ jobs:
           git remote add upstream "https://github.com/${{ github.repository }}"
           git fetch --all
           git checkout -b upstream-${{ inputs.base-ref }} --track  "upstream/${{ inputs.base-ref }}"
-          if git merge "${{ inputs.ref }}"; then
-            echo "::set-output name=sha::$(git rev-parse HEAD)"
-            echo merge was successful
-            #mkdir -p "${{inputs.ig-root}}/output"; echo hello merged branch build $(date) > "${{inputs.ig-root}}/output/index.html"
-            docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-publisher-tag}}"  ${{ inputs.publisher-args }}
-          else
-            echo merge has conflicts
-            git merge --abort
+          if ! git merge-base --is-ancestor ${{ inputs.base-ref }} ${{ inputs.ref }}; then
+            if git merge "${{ inputs.ref }}"; then
+              echo "::set-output name=sha::$(git rev-parse HEAD)"
+              echo merge was successful
+              #mkdir -p "${{inputs.ig-root}}/output"; echo hello merged branch build $(date) > "${{inputs.ig-root}}/output/index.html"
+              docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-publisher-tag}}"  ${{ inputs.publisher-args }}
+            else
+              echo merge has conflicts
+              git merge --abort
+            fi
           fi
+          
+
           
       - name: Publish merged
         if: inputs.base-ref != '' && inputs.io-repo != ''
@@ -168,6 +172,15 @@ jobs:
           #set -x
           cd io-clone
           [[ -d "${{ inputs.io-path }}--merged" ]] &&  rm -rf "${{ inputs.io-path }}--merged"
+          if ! git merge-base --is-ancestor ${{ inputs.base-ref }} ${{ inputs.ref }}; then
+            mkdir -p "${{ inputs.io-path }}--merged"
+            cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}--merged"
+            { 
+              cat IG_BUILDS.md;
+              printf '%s  \n' "[${{ inputs.io-path }}--merged](https://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}--merged/index.html?version=${{steps.merge.outputs.sha}})";
+            } | sort > IG_BUILDS.md.new
+            mv -f IG_BUILDS.md.new IG_BUILDS.md
+          fi
           mkdir -p "${{ inputs.io-path }}--merged"
           cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}--merged"
           { 
