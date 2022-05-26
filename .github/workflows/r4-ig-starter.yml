@@ -121,12 +121,10 @@ jobs:
     with:
       owner-repo: ${{ github.repository }}
       ref: ${{ github.ref_name }}
-
       ig-root: "ig/r4-ig-starter"
       publisher-args: "-ig /ig/ig.ini"
       docker-publisher-tag: latest
       base-ref: ''
-
       io-owner: ShahimEssaid
       io-repo: tmp-io
       io-branch: gh-pages
