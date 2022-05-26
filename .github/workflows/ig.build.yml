@@ -125,6 +125,7 @@ jobs:
         run: |
           set -x
           cd io-clone
+          git pull origin ${{ inputs.io-branch }}
           [[ -d "${{ inputs.io-path }}" ]] &&  rm -rf "${{ inputs.io-path }}"
           mkdir -p "${{ inputs.io-path }}"
           cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}"
