@@ -89,7 +89,7 @@ on:
 jobs:
   docker-build:
     runs-on: ubuntu-latest
-    if: 'a' == 'a'
+    if: ${{'a'}} == ${{'a'}}
     steps:
       - name: Checkout IG
         uses: actions/checkout@v3
