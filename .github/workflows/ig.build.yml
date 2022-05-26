@@ -9,15 +9,16 @@ on:
     inputs:
 
       # branch/PR home repo
+      # TODO: can do without this by using ${{ github... }}
       owner-repo:
+        description: This owner/repo-name
         type: string
         required: true
+
       ref:
+        description: The ref to build.
         type: string
         required: true
-#      depth:
-#        type: number
-#        required: true
 
       # build related
       ig-root:
@@ -30,22 +31,28 @@ on:
         required: true
         type: string
 
-      docker-tag:
-        description: "The Docker tag to use from: https://hub.docker.com/repository/docker/sessaid/ig-publisher/tags"
-        required: true
+      run-sushi:
+        description: If sushi should run
+        type: string
+        default: "true"
+
+      sushi-args:
+        description: The parameters to pass to the sushi command. Keep in mind that the IG root folder is at /ig.
         type: string
 
-      # base for PR builds
-      # this being set is an indicator of a PR build that should be merge-built as well if possible
-#      try-merge:
-#        description: if a merge with a base ref should be done. this is a string due to not being clear on boolean type
-#        # TODO: See: https://github.com/actions/runner/issues/1483
-#        type: string
+      docker-publisher-tag:
+        description: "The Docker publisher tag to use from: https://hub.docker.com/repository/docker/sessaid/ig-publisher/tags"
+        type: string
+        default: latest
+
+      docker-sushi-tag:
+        description: "The Docker SUSHI tag to use from: https://hub.docker.com/repository/docker/sessaid/sushi/tags"
+        type: string
+        default: latest
 
       base-ref:
+        description: A base ref if the ref should be merged into it to try a merge build. This is used for PRs.
         type: string
-#      pr-number:
-#        type: string
 
       # publication related
       io-owner:
@@ -66,9 +73,8 @@ on:
         type: string
 
     secrets:
-#      token:
-#        required: true
-      io-token:
+      ouput-token:
+        description: A read/write token to the publication repository.
         required: true
 jobs:
   docker-build:
@@ -82,20 +88,22 @@ jobs:
           ref: ${{ inputs.ref }}
           path: ig-clone
 
+      - name Run SUSHI if enabled
+        if: inputs.run-sushi == "true"
+        run: |
+          cd ig-clone
+          if [[ -d "input/fsh ]]; then
+            docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/sushi:${{inputs.docker-sushi-tag}}"  ${{ inputs.sushi-args }}
+          fi
+
       - name: Build IG branch
         run: |
           #set -x
-          #env | sort
-          #id
           cd ig-clone
-          #cat .git/config
-          #git status
-          #ls -la
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
-          #mkdir -p "${{inputs.ig-root}}/output"
-          #echo hello branch build $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
-          docker pull "sessaid/ig-publisher:${{inputs.docker-tag}}"
-          docker run --rm --user $(id -u):$(id -u) --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
+          #mkdir -p "${{inputs.ig-root}}/output"; echo hello branch build $(date) > "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}/output/index.html"
+          #docker pull "sessaid/ig-publisher:${{inputs.docker-publisher-tag}}"
+          docker run --rm --user $(id -u):$(id -u) --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-publisher-tag}}"  ${{ inputs.publisher-args }}
 
       # Publish if requested
       - name: Checkout IO branch
@@ -105,16 +113,13 @@ jobs:
           repository: ${{ inputs.io-owner }}/${{ inputs.io-repo }}
           ref: ${{ inputs.io-branch }}
           path: io-clone
-          token: ${{ secrets.io-token }}
+          token: ${{ secrets.output-token }}
 
       - name: Publish branch
         if: inputs.io-repo != ''
         run: |
           set -x
           cd io-clone
-          #cat .git/config
-          #git status
-          #ls -la
           [[ -d "${{ inputs.io-path }}" ]] &&  rm -rf "${{ inputs.io-path }}"
           mkdir -p "${{ inputs.io-path }}"
           cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}"
@@ -135,21 +140,15 @@ jobs:
           #set -x
           echo doing base merge and build
           cd ig-clone
-          #git status
-          #ls -la
-          #ls -la ig/r4-ig-starter/output/
           git fetch --unshallow
           git clean -fdx
           git remote add upstream "https://github.com/${{ github.repository }}"
-          #cat .git/config
           git fetch --all
           git checkout -b upstream-${{ inputs.base-ref }} --track  "upstream/${{ inputs.base-ref }}"
           if git merge "${{ inputs.ref }}"; then
             echo merge was successful
-            #mkdir -p "${{inputs.ig-root}}/output"
-            #echo hello merged branch build $(date) > "${{inputs.ig-root}}/output/index.html"
-            who
-            docker run --rm --user $(id -u):$(id -u) --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-tag}}"  ${{ inputs.publisher-args }}
+            #mkdir -p "${{inputs.ig-root}}/output"; echo hello merged branch build $(date) > "${{inputs.ig-root}}/output/index.html"
+            docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-publisher-tag}}"  ${{ inputs.publisher-args }}
           else
             echo merge has conflicts
             git merge --abort
