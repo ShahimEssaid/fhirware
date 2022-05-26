@@ -175,7 +175,7 @@ jobs:
           set -x
           cd io-clone
           [[ -d "${{ inputs.io-path }}--merged" ]] &&  rm -rf "${{ inputs.io-path }}--merged"
-          if [[ ${{ steps.merge.outputs.skip }} != true ]]; then
+          if [[ ${{ steps.merge.outputs.skip }} == false ]]; then
             mkdir -p "${{ inputs.io-path }}--merged"
             cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}--merged"
             { 
