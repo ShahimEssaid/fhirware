@@ -43,7 +43,6 @@ jobs:
       ig-root: ${{ steps.vars.outputs.ig-root }}
       publisher-args: ${{ steps.vars.outputs.publisher-args }}
       docker-publisher-tag: ${{ steps.vars.outputs.docker-publisher-tag }}
-#      docker-sushi-tag: ${{ steps.vars.outputs.docker-sushi-tag }}
       io-owner: ${{ steps.vars.outputs.io-owner }}
       io-repo: ${{ steps.vars.outputs.io-repo }}
       io-branch: ${{ steps.vars.outputs.io-branch }}
@@ -63,7 +62,6 @@ jobs:
             echo "::set-output name=ig-root::${{ env.IG_ROOT }}"
             echo "::set-output name=publisher-args::${{ env.PUBLISHER_ARGS }}"
             echo "::set-output name=docker-publisher-tag::${{ env.DOCKER_PUBLISHER_TAG }}"
-#            echo "::set-output name=docker-sushi-tag::${{ env.DOCKER_SUSHI_TAG }}"
             echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
             echo "::set-output name=io-repo::${{ env.IO_REPO }}"
             echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
@@ -78,7 +76,6 @@ jobs:
             echo "::set-output name=ig-root::${{ env.IG_ROOT }}"
             echo "::set-output name=publisher-args::${{ env.PUBLISHER_ARGS }}"
             echo "::set-output name=docker-publisher-tag::${{ env.DOCKER_PUBLISHER_TAG }}"
-#            echo "::set-output name=docker-sushi-tag::${{ env.DOCKER_SUSHI_TAG }}"
             echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
             echo "::set-output name=io-repo::${{ env.IO_REPO }}"
             echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
@@ -105,9 +102,6 @@ jobs:
       ig-root: ${{ needs.vars.outputs.ig-root }}
       publisher-args: ${{ needs.vars.outputs.publisher-args }}
       docker-publisher-tag: ${{ needs.vars.outputs.docker-publisher-tag }}
-#      docker-sushi-tag: ${{ needs.vars.outputs.docker-sushi-tag }}
-
-#      try-merge: ${{ needs.vars.outputs.try-merge }}
       base-ref: ${{ needs.vars.outputs.base-ref }}
 
       io-owner: ${{ needs.vars.outputs.io-owner }}
