@@ -114,11 +114,12 @@ jobs:
 #      io-path: ${{ needs.vars.outputs.io-path }}
 
   build-push:
-    if: ${{ github.event_name }} == "push"
     uses: ./.github/workflows/ig.build.yml
     secrets:
       output-token: ${{ secrets.PUBLISHER_IO }}
     with:
+      expected-event: push
+      event: ${{ github.event_name }}
       owner-repo: ${{ github.repository }}
       ref: ${{ github.ref_name }}
       ig-root: "ig/r4-ig-starter"
@@ -131,11 +132,12 @@ jobs:
       io-path: "ig/r4-ig-starter/branch/${{ github.ref_name }}"
 
   build-pr:
-    if: ${{ github.event_name }} == "pull_request_target"
     uses: ./.github/workflows/ig.build.yml
     secrets:
       output-token: ${{ secrets.PUBLISHER_IO }}
     with:
+      expected-event: pull_request_target
+      event: ${{ github.event_name }}
       owner-repo: ${{ github.event.pull_request.head.repo.full_name }}
       ref: ${{ github.event.pull_request.head.ref }}
       ig-root: "ig/r4-ig-starter"
