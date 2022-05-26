@@ -144,7 +144,7 @@ jobs:
         # try to merge and build again
         # TODO: try to optimize the full fetch
         run: |
-          #set -x
+          set -x
           echo doing base merge and build
           cd ig-clone
           git fetch --unshallow
@@ -162,6 +162,8 @@ jobs:
               echo merge has conflicts
               git merge --abort
             fi
+          else
+            echo "::set-output name=skip::true"
           fi
           
 
@@ -169,10 +171,10 @@ jobs:
       - name: Publish merged
         if: inputs.base-ref != '' && inputs.io-repo != ''
         run: |  
-          #set -x
+          set -x
           cd io-clone
           [[ -d "${{ inputs.io-path }}--merged" ]] &&  rm -rf "${{ inputs.io-path }}--merged"
-          if ! git merge-base --is-ancestor ${{ inputs.base-ref }} ${{ inputs.ref }}; then
+          if [[ ${{ steps.merge.outputs.skip }} != true ]]; then
             mkdir -p "${{ inputs.io-path }}--merged"
             cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}--merged"
             { 
@@ -181,13 +183,6 @@ jobs:
             } | sort > IG_BUILDS.md.new
             mv -f IG_BUILDS.md.new IG_BUILDS.md
           fi
-          mkdir -p "${{ inputs.io-path }}--merged"
-          cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}--merged"
-          { 
-            cat IG_BUILDS.md;
-            printf '%s  \n' "[${{ inputs.io-path }}--merged](https://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}--merged/index.html?version=${{steps.merge.outputs.sha}})";
-          } | sort > IG_BUILDS.md.new
-          mv -f IG_BUILDS.md.new IG_BUILDS.md
 
       - name: Push IO
         if: inputs.io-repo != ''
