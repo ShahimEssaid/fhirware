@@ -104,7 +104,7 @@ jobs:
       - name: Env setup
         id: env
         run: |
-          echo "NOW=$(date date  +%Y%m%d_%H%M%S)" >> $GITHUB_ENV
+          echo "NOW=$(date +%Y%m%d_%H%M%S)" >> $GITHUB_ENV
 
       - name: Debug inputs
         run: |
