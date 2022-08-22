@@ -58,18 +58,18 @@ jobs:
       base-ig-owner-repo: ${{ steps.calc.outputs.base-ig-owner-repo }}
       base-ig-ref: ${{ steps.calc.outputs.base-ig-ref }}
       # ---
-      publisher-args: ${{ steps.vars.outputs.publisher-args }}
-      docker-publisher-tag: ${{ steps.vars.outputs.docker-publisher-tag }}
+      publisher-args: ${{ steps.calc.outputs.publisher-args }}
+      docker-publisher-tag: ${{ steps.calc.outputs.docker-publisher-tag }}
       # ---
-      try-merge: ${{ steps.vars.outputs.try-merge }}
-      base-ref: ${{ steps.vars.outputs.base-ref }}
-      pr-number: ${{ steps.vars.outputs.pr-number }}
-      ig-root: ${{ steps.vars.outputs.ig-root }}
+      try-merge: ${{ steps.calc.outputs.try-merge }}
+      base-ref: ${{ steps.calc.outputs.base-ref }}
+      pr-number: ${{ steps.calc.outputs.pr-number }}
+      ig-root: ${{ steps.calc.outputs.ig-root }}
 
-      io-owner: ${{ steps.vars.outputs.io-owner }}
-      io-repo: ${{ steps.vars.outputs.io-repo }}
-      io-branch: ${{ steps.vars.outputs.io-branch }}
-      io-path: ${{ steps.vars.outputs.io-path }}
+      io-owner: ${{ steps.calc.outputs.io-owner }}
+      io-repo: ${{ steps.calc.outputs.io-repo }}
+      io-branch: ${{ steps.calc.outputs.io-branch }}
+      io-path: ${{ steps.calc.outputs.io-path }}
 
     steps:
       - id: calc
