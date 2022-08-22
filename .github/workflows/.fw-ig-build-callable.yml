@@ -118,6 +118,7 @@ jobs:
         run: |
           cd ig-clone
           cat .git/config
+          cat .git/shallow
           exit 0
 
       - name: Building IG
