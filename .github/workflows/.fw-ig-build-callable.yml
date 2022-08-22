@@ -95,11 +95,16 @@ on:
 #      output-token:
 #        description: A read/write token to the publication repository.
 #        required: true
+
 jobs:
   docker-build:
     name: Build and Publish IG
     runs-on: ubuntu-latest
     steps:
+
+      - name: Debug inputs
+        run: |
+          echo inputs.ig-read-secret-name: ${{ inputs.ig-read-secret-name }}
 
       - name: Checkout IG ${{ inputs.owner-repo }}/${{inputs.ig-root}} ref:${{ inputs.ref }}
         uses: actions/checkout@v3
