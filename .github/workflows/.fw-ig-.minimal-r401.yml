@@ -44,7 +44,7 @@ on:
 jobs:
 
   # Do any setup needed to create job output parameters needed to the later build job
-  vars:
+  calcs:
     name: Build vars
     runs-on: ubuntu-latest
     outputs:
@@ -114,19 +114,19 @@ jobs:
           echo "::set-output name=docker-publisher-tag::${{ env.DOCKER_PUBLISHER_TAG }}"
 
   build:
-    needs: calc
+    needs: calcs
     uses: ./.github/workflows/.fw-ig-build-callable.yml
     secrets: inherit
 
     with:
-      ig-owner-repo: ${{ needs.calc.outputs.owner-repo }}
-      ig-ref: ${{ needs.calc.outputs.ref }}
-      ig-path: ${{ needs.calc.outputs.ig-path }}
-      ig-read-secret-name: ${{ needs.calc.outputs.ig-read-secret-name }}
-      ig-write-secret-name: ${{ needs.calc.outputs.ig-write-secret-name }}
+      ig-owner-repo: ${{ needs.calcs.outputs.owner-repo }}
+      ig-ref: ${{ needs.calcs.outputs.ref }}
+      ig-path: ${{ needs.calcs.outputs.ig-path }}
+      ig-read-secret-name: ${{ needs.calcs.outputs.ig-read-secret-name }}
+      ig-write-secret-name: ${{ needs.calcs.outputs.ig-write-secret-name }}
 
-      publisher-args: ${{ needs.calc.outputs.publisher-args }}
-      docker-publisher-tag: ${{ needs.calc.outputs.docker-publisher-tag }}
+      publisher-args: ${{ needs.calcs.outputs.publisher-args }}
+      docker-publisher-tag: ${{ needs.calcs.outputs.docker-publisher-tag }}
 
 #      base-ref: ${{ needs.vars.outputs.base-ref }}
 #
