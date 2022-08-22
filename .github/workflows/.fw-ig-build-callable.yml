@@ -101,11 +101,16 @@ jobs:
     name: Build and Publish IG
     runs-on: ubuntu-latest
     steps:
+      - name: Env setup
+        id: env
+        run: |
+          echo "NOW=$(date date  +%Y%m%d_%H%M%S)" >> $GITHUB_ENV
 
       - name: Debug inputs
         run: |
           echo inputs.ig-read-secret-name: ${{ inputs.ig-read-secret-name }}
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
+          echo Running IG build with inputs: '${{ toJSON(env) }}'
 
       - name: Checkout IG ${{ inputs.owner-repo }}/${{inputs.ig-root}} ref:${{ inputs.ref }}
         uses: actions/checkout@v3
@@ -114,13 +119,13 @@ jobs:
           ref: ${{ inputs.ig-ref }}
           path: ig-clone
           token: ${{ secrets[inputs.ig-read-secret-name] }}
-
-      - name: exit early
-        run: |
-          cd ig-clone
-          cat .git/config
-          cat .git/shallow
-          exit 0
+#
+#      - name: exit early
+#        run: |
+#          cd ig-clone
+#          cat .git/config
+#          cat .git/shallow
+#          exit 0
 
       - name: Building IG
         id: branch
