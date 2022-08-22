@@ -112,7 +112,7 @@ jobs:
           repository: ${{ inputs.ig-owner-repo }}
           ref: ${{ inputs.ig-ref }}
           path: ig-clone
-          token: ${{ secrets['ig-read-secret-name'] }}
+          token: ${{ secrets[inputs.ig-read-secret-name] }}
 
       - name: exit early
         run: |
