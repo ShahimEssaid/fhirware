@@ -105,6 +105,7 @@ jobs:
       - name: Debug inputs
         run: |
           echo inputs.ig-read-secret-name: ${{ inputs.ig-read-secret-name }}
+          echo Running IG build with inputs: '${{ toJSON(inputs) }}'
 
       - name: Checkout IG ${{ inputs.owner-repo }}/${{inputs.ig-root}} ref:${{ inputs.ref }}
         uses: actions/checkout@v3
