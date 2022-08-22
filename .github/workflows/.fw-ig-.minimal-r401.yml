@@ -9,9 +9,16 @@ name: minimal-r401-ig-wf
 # 5. Enable GitHub actions and write access to this repository.
 # 6.
 env:
+  IG_OWNER_REPO: ${{ github.repository }}
+  IG_REF_NAME: ${{ github.ref_name }}
+  IG_READ_SECRET_NAME: GITHUB_TOKEN
+  IG_WRITE_SECRET_NAME: GITHUB_TOKEN
   IG_PATH: 'fw-ig/.minimal-r401'  # The relative folder path of the IG root directory
   DOCKER_PUBLISHER_TAG: latest  # The Docker tag for the Publisher version wanted for the build from: https://hub.docker.com/repository/docker/sessaid/ig-publisher
   PUBLISHER_ARGS: "-ig /ig/ig.ini"  # the publisher command line arguments
+
+
+
   IO_OWNER:  #  The owner of a GitHub repository that will be used for publishing the built IG's output
   IO_REPO:  # The repository to publish to
   IO_BRANCH: gh-pages  # The branch to publish to
@@ -77,10 +84,10 @@ jobs:
           
           if [ "${{ github.event_name }}" = "push" ]; then
           
-            echo "::set-output name=ig-owner-repo::${{ github.repository }}"
-            echo "::set-output name=ig-ref::${{ github.ref_name }}"
-            echo "::set-output name=ig-read-secret-name::GITHUB_TOKEN"
-            echo "::set-output name=ig-write-secret-name::GITHUB_TOKEN"
+            echo "::set-output name=ig-owner-repo::${{ env.IG_OWNER_REPO }}"
+            echo "::set-output name=ig-ref::${{ env.  IG_REF_NAME }}"
+            echo "::set-output name=ig-read-secret-name::${{ env.IG_READ_SECRET_NAME }}"
+            echo "::set-output name=ig-write-secret-name::${{ env.IG_WRITE_SECRET_NAME }}"
 
             echo "::set-output name=try-merge::false"
             echo "::set-output name=base-ref::"
