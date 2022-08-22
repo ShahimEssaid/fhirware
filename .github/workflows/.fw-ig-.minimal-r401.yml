@@ -11,18 +11,18 @@ name: minimal-r401-ig-wf
 env:
   IG_OWNER_REPO: ${{ github.repository }}
   IG_REF_NAME: ${{ github.ref_name }}
+  IG_PATH: 'fw-ig/.minimal-r401'  # The relative folder path of the IG root directory
   IG_READ_SECRET_NAME: GITHUB_TOKEN
   IG_WRITE_SECRET_NAME: GITHUB_TOKEN
-  IG_PATH: 'fw-ig/.minimal-r401'  # The relative folder path of the IG root directory
+
   DOCKER_PUBLISHER_TAG: latest  # The Docker tag for the Publisher version wanted for the build from: https://hub.docker.com/repository/docker/sessaid/ig-publisher
   PUBLISHER_ARGS: "-ig /ig/ig.ini"  # the publisher command line arguments
 
-
-
-  IO_OWNER:  #  The owner of a GitHub repository that will be used for publishing the built IG's output
-  IO_REPO:  # The repository to publish to
+  IO_OWNER: ${{ github.event.repository.owner.login }} #  The owner of a GitHub repository that will be used for publishing the built IG's output
+  IO_REPO: ${{ github.event.repository.name }} # The repository to publish to
   IO_BRANCH: gh-pages  # The branch to publish to
   IO_PATH_PREFIX: ''  # An optional path prefix (from the root of the repo) to publish to. No leading slash but with a trailing slash
+  IO_WRITE_SECRET_NAME: GITHUB_TOKEN
 
 defaults:
   run:
@@ -55,28 +55,35 @@ jobs:
     name: Build vars
     runs-on: ubuntu-latest
     outputs:
-      # ---
+      # --- ig branch
       ig-owner-repo: ${{ steps.calc.outputs.ig-owner-repo }}
       ig-ref: ${{ steps.calc.outputs.ig-ref }}
       ig-path: ${{ steps.calc.outputs.ig-path }}
       ig-read-secret-name: ${{ steps.calc.outputs.ig-read-secret-name }}
       ig-write-secret-name: ${{ steps.calc.outputs.ig-write-secret-name }}
-      # ---
+
+      # --- publisher
+      publisher-args: ${{ steps.calc.outputs.publisher-args }}
+      docker-publisher-tag: ${{ steps.calc.outputs.docker-publisher-tag }}
+
+      # ----- IO
+      io-owner: ${{ steps.calc.outputs.io-owner }}
+      io-repo: ${{ steps.calc.outputs.io-repo }}
+      io-branch: ${{ steps.calc.outputs.io-branch }}
+      io-path: ${{ steps.calc.outputs.io-path }}
+
+      # -----
       base-ig-owner-repo: ${{ steps.calc.outputs.base-ig-owner-repo }}
       base-ig-ref: ${{ steps.calc.outputs.base-ig-ref }}
       # ---
-      publisher-args: ${{ steps.calc.outputs.publisher-args }}
-      docker-publisher-tag: ${{ steps.calc.outputs.docker-publisher-tag }}
+
       # ---
       try-merge: ${{ steps.calc.outputs.try-merge }}
       base-ref: ${{ steps.calc.outputs.base-ref }}
       pr-number: ${{ steps.calc.outputs.pr-number }}
       ig-root: ${{ steps.calc.outputs.ig-root }}
 
-      io-owner: ${{ steps.calc.outputs.io-owner }}
-      io-repo: ${{ steps.calc.outputs.io-repo }}
-      io-branch: ${{ steps.calc.outputs.io-branch }}
-      io-path: ${{ steps.calc.outputs.io-path }}
+
 
     steps:
       - id: calc

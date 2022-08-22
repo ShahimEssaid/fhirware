@@ -70,20 +70,25 @@ on:
         default: latest
 
 # --- Publishing related
-#      io-repo:
-#        description: If set, it is a GitHub dedicated repository (repo name only) for publishing the IG's output.
-#        type: string
-#
-#      io-branch:
-#        description: The branch to use for publishing the IG's output. gh-pages by default so it works on github.io
-#        type: string
-#        default: gh-pages
-#
-#      io-path:
-#        description: "A path to publish under. If not set, a default is calculated. TODO: document this."
-#        type: string
-#
-#      debug:
+      io-repo:
+        description: If set, it is a GitHub dedicated repository (repo name only) for publishing the IG's output.
+        type: string
+
+      io-branch:
+        description: The branch to use for publishing the IG's output. gh-pages by default so it works on github.io
+        type: string
+        default: gh-pages
+
+      io-path:
+        description: "A path to publish under. If not set, a default is calculated. TODO: document this."
+        type: string
+
+      io-write-secrete-name:
+        description: The secret name for writing to the IO repository
+        type: string
+        required: true
+
+    #      debug:
 #        description: "Turn on some debugging output to the job summary"
 #        type: string
 
@@ -150,6 +155,12 @@ jobs:
           ref: ${{ inputs.io-branch }}
           path: io-clone
           token: ${{ secrets.output-token }}
+
+
+
+
+
+
 
       - name: Publishing IG branch
         if: inputs.io-repo != ''
