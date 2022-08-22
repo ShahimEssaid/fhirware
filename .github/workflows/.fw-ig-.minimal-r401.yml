@@ -79,8 +79,8 @@ jobs:
           
             echo "::set-output name=ig-owner-repo::${{ github.repository }}"
             echo "::set-output name=ig-ref::${{ github.ref_name }}"
-            echo "::set-output name=outputs.ig-read-secret-name::GITHUB_TOKEN"
-            echo "::set-output name=outputs.ig-write-secret-name::GITHUB_TOKEN"
+            echo "::set-output name=ig-read-secret-name::GITHUB_TOKEN"
+            echo "::set-output name=ig-write-secret-name::GITHUB_TOKEN"
 
             echo "::set-output name=try-merge::false"
             echo "::set-output name=base-ref::"
