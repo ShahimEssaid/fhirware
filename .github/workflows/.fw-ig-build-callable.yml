@@ -116,6 +116,8 @@ jobs:
 
       - name: exit early
         run: |
+          cd ig-clone
+          cat .git/config
           exit 0
 
       - name: Building IG
