@@ -119,8 +119,8 @@ jobs:
     secrets: inherit
 
     with:
-      ig-owner-repo: ${{ needs.calcs.outputs.owner-repo }}
-      ig-ref: ${{ needs.calcs.outputs.ref }}
+      ig-owner-repo: ${{ needs.calcs.outputs.ig-owner-repo }}
+      ig-ref: ${{ needs.calcs.outputs.ig-ref }}
       ig-path: ${{ needs.calcs.outputs.ig-path }}
       ig-read-secret-name: ${{ needs.calcs.outputs.ig-read-secret-name }}
       ig-write-secret-name: ${{ needs.calcs.outputs.ig-write-secret-name }}
