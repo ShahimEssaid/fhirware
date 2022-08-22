@@ -1,4 +1,4 @@
-name: IG build entry workflow
+name: minimal-r401-ig-wf
 
 # Setup:
 # 1. Copy this file and name it to match the IG folder name to help relate the file to the IG. The file name it not
@@ -9,7 +9,7 @@ name: IG build entry workflow
 # 5. Enable GitHub actions and write access to this repository.
 # 6.
 env:
-  IG_ROOT: 'fw-ig/.minimal-r401'  # The relative folder path of the IG root directory
+  IG_PATH: 'fw-ig/.minimal-r401'  # The relative folder path of the IG root directory
   DOCKER_PUBLISHER_TAG: latest  # The Docker tag for the Publisher version wanted for the build from: https://hub.docker.com/repository/docker/sessaid/ig-publisher
   PUBLISHER_ARGS: "-ig /ig/ig.ini"  # the publisher command line arguments
   IO_OWNER:  #  The owner of a GitHub repository that will be used for publishing the built IG's output
@@ -21,8 +21,10 @@ defaults:
   run:
     shell: bash
 
+# Only build the latest branch for an IG, and cancel any in progress builds in favor of the latest.
 concurrency:
-  group: ig-build
+  group: ${{ github.workflow }}_${{ github.ref }}
+  cancel-in-progress: true
 
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
@@ -46,36 +48,48 @@ jobs:
     name: Build vars
     runs-on: ubuntu-latest
     outputs:
-      owner-repo: ${{ steps.vars.outputs.owner-repo }}
-      ref: ${{ steps.vars.outputs.ref }}
+      # ---
+      ig-owner-repo: ${{ steps.calc.outputs.ig-owner-repo }}
+      ig-ref: ${{ steps.calc.outputs.ig-ref }}
+      ig-path: ${{ steps.calc.outputs.ig-path }}
+      ig-read-secret-name: ${{ steps.calc.outputs.ig-read-secret-name }}
+      ig-write-secret-name: ${{ steps.calc.outputs.ig-write-secret-name }}
+      # ---
+      base-ig-owner-repo: ${{ steps.calc.outputs.base-ig-owner-repo }}
+      base-ig-ref: ${{ steps.calc.outputs.base-ig-ref }}
+      # ---
+      publisher-args: ${{ steps.vars.outputs.publisher-args }}
+      docker-publisher-tag: ${{ steps.vars.outputs.docker-publisher-tag }}
+      # ---
       try-merge: ${{ steps.vars.outputs.try-merge }}
       base-ref: ${{ steps.vars.outputs.base-ref }}
       pr-number: ${{ steps.vars.outputs.pr-number }}
       ig-root: ${{ steps.vars.outputs.ig-root }}
-      publisher-args: ${{ steps.vars.outputs.publisher-args }}
-      docker-publisher-tag: ${{ steps.vars.outputs.docker-publisher-tag }}
+
       io-owner: ${{ steps.vars.outputs.io-owner }}
       io-repo: ${{ steps.vars.outputs.io-repo }}
       io-branch: ${{ steps.vars.outputs.io-branch }}
       io-path: ${{ steps.vars.outputs.io-path }}
 
     steps:
-      - id: vars
+      - id: calc
         run: |
-
+          
           if [ "${{ github.event_name }}" = "push" ]; then
-            echo "::set-output name=owner-repo::${{ github.repository }}"
-            echo "::set-output name=ref::${{ github.ref_name }}"
+          
+            echo "::set-output name=ig-owner-repo::${{ github.repository }}"
+            echo "::set-output name=ig-ref::${{ github.ref_name }}"
+            echo "::set-output name=outputs.ig-read-secret-name::GITHUB_TOKEN"
+            echo "::set-output name=outputs.ig-write-secret-name::GITHUB_TOKEN"
+
             echo "::set-output name=try-merge::false"
             echo "::set-output name=base-ref::"
             echo "::set-output name=pr-number::1"
-            echo "::set-output name=ig-root::${{ env.IG_ROOT }}"
-            echo "::set-output name=publisher-args::${{ env.PUBLISHER_ARGS }}"
-            echo "::set-output name=docker-publisher-tag::${{ env.DOCKER_PUBLISHER_TAG }}"
+
             echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
             echo "::set-output name=io-repo::${{ env.IO_REPO }}"
             echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
-            echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_ROOT }}/branch/${{ github.ref_name }}"
+            echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/branch/${{ github.ref_name }}"
 
           elif [ "${{ github.event_name }}" = "pull_request_target" ]; then
             echo "::set-output name=owner-repo::${{ github.event.pull_request.head.repo.full_name }}"
@@ -83,34 +97,40 @@ jobs:
             echo "::set-output name=try-merge::true"
             echo "::set-output name=base-ref::${{ github.event.pull_request.base.ref }}"
             echo "::set-output name=pr-number::${{ github.event.number }}"
-            echo "::set-output name=ig-root::${{ env.IG_ROOT }}"
-            echo "::set-output name=publisher-args::${{ env.PUBLISHER_ARGS }}"
-            echo "::set-output name=docker-publisher-tag::${{ env.DOCKER_PUBLISHER_TAG }}"
+
             echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
             echo "::set-output name=io-repo::${{ env.IO_REPO }}"
             echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
-            echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_ROOT }}/pr-${{ github.event.number }}/${{ github.event.pull_request.base.ref }}/FROM-${{ github.event.pull_request.head.repo.full_name }}/${{ github.event.pull_request.head.ref }}"
+            echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/pr-${{ github.event.number }}/${{ github.event.pull_request.base.ref }}/FROM-${{ github.event.pull_request.head.repo.full_name }}/${{ github.event.pull_request.head.ref }}"
 
           else
            echo EXITING DUE TO UNKNOWN EVENT NAME.
            exit 1
           fi
+          
+          echo "::set-output name=ig-path::${{ env.IG_PATH }}"
+          
+          echo "::set-output name=publisher-args::${{ env.PUBLISHER_ARGS }}"
+          echo "::set-output name=docker-publisher-tag::${{ env.DOCKER_PUBLISHER_TAG }}"
 
   build:
-    needs: vars
+    needs: calc
     uses: ./.github/workflows/.fw-ig-build-callable.yml
-    secrets:
-      output-token: ${{ secrets.PUBLISHER_IO }}
+    secrets: inherit
+
     with:
-      owner-repo: ${{ needs.vars.outputs.owner-repo }}
-      ref: ${{ needs.vars.outputs.ref }}
+      ig-owner-repo: ${{ needs.calc.outputs.owner-repo }}
+      ig-ref: ${{ needs.calc.outputs.ref }}
+      ig-path: ${{ needs.calc.outputs.ig-path }}
+      ig-read-secret-name: ${{ needs.calc.outputs.ig-read-secret-name }}
+      ig-write-secret-name: ${{ needs.calc.outputs.ig-write-secret-name }}
 
-      ig-root: ${{ needs.vars.outputs.ig-root }}
-      publisher-args: ${{ needs.vars.outputs.publisher-args }}
-      docker-publisher-tag: ${{ needs.vars.outputs.docker-publisher-tag }}
-      base-ref: ${{ needs.vars.outputs.base-ref }}
+      publisher-args: ${{ needs.calc.outputs.publisher-args }}
+      docker-publisher-tag: ${{ needs.calc.outputs.docker-publisher-tag }}
 
-      io-owner: ${{ needs.vars.outputs.io-owner }}
-      io-repo: ${{ needs.vars.outputs.io-repo }}
-      io-branch: ${{ needs.vars.outputs.io-branch }}
-      io-path: ${{ needs.vars.outputs.io-path }}
+#      base-ref: ${{ needs.vars.outputs.base-ref }}
+#
+#      io-owner: ${{ needs.vars.outputs.io-owner }}
+#      io-repo: ${{ needs.vars.outputs.io-repo }}
+#      io-branch: ${{ needs.vars.outputs.io-branch }}
+#      io-path: ${{ needs.vars.outputs.io-path }}
