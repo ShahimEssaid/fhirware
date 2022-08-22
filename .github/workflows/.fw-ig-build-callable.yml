@@ -107,7 +107,11 @@ jobs:
           repository: ${{ inputs.ig-owner-repo }}
           ref: ${{ inputs.ig-ref }}
           path: ig-clone
-          token: ${{ secrets[ig-read-secret-name] }}
+          token: ${{ secrets[format('{0}', inputs.ig-read-secret-name)] }}
+
+      - name: exit early
+        run: |
+          exit 0
 
       - name: Building IG
         id: branch
@@ -131,10 +135,6 @@ jobs:
           ref: ${{ inputs.io-branch }}
           path: io-clone
           token: ${{ secrets.output-token }}
-
-      - name: exit early
-        run: |
-          exit 0
 
       - name: Publishing IG branch
         if: inputs.io-repo != ''
