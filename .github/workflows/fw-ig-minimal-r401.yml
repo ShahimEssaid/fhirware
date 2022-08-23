@@ -147,7 +147,7 @@ jobs:
 
   build:
     needs: setup
-    uses: ./.github/workflows/.fw-ig-build-callable.yml
+    uses: ./.github/workflows/_fw-ig-build-callable.yml
     secrets: inherit
 
     with:
