@@ -26,7 +26,8 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/essaids/git/gh/se/fhirware"
+    "last_opened_file_path": "/home/essaids/git/gh/se/fhirware",
+    "nodejs_package_manager_path": "npm"
   },
   "keyToStringList": {
     "GitStage.ChangesTree.GroupingKeys": [
@@ -44,7 +45,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1661204800201</updated>
-      <workItem from="1661204802270" duration="572000" />
+      <workItem from="1661204802270" duration="5034000" />
     </task>
     <servers />
   </component>

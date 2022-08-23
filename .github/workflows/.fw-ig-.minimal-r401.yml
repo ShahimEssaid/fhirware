@@ -51,42 +51,41 @@ on:
 jobs:
 
   # Do any setup needed to create job output parameters needed to the later build job
-  calcs:
+  setup:
     name: Build vars
     runs-on: ubuntu-latest
     outputs:
       # --- ig branch
-      ig-owner-repo: ${{ steps.calc.outputs.ig-owner-repo }}
-      ig-ref: ${{ steps.calc.outputs.ig-ref }}
-      ig-path: ${{ steps.calc.outputs.ig-path }}
-      ig-read-secret-name: ${{ steps.calc.outputs.ig-read-secret-name }}
-      ig-write-secret-name: ${{ steps.calc.outputs.ig-write-secret-name }}
+      ig-owner-repo: ${{ steps.args.outputs.ig-owner-repo }}
+      ig-ref: ${{ steps.args.outputs.ig-ref }}
+      ig-path: ${{ steps.args.outputs.ig-path }}
+      ig-read-secret-name: ${{ steps.args.outputs.ig-read-secret-name }}
+      ig-write-secret-name: ${{ steps.args.outputs.ig-write-secret-name }}
 
       # --- publisher
-      publisher-args: ${{ steps.calc.outputs.publisher-args }}
-      docker-publisher-tag: ${{ steps.calc.outputs.docker-publisher-tag }}
+      publisher-args: ${{ steps.args.outputs.publisher-args }}
+      docker-publisher-tag: ${{ steps.args.outputs.docker-publisher-tag }}
 
       # ----- IO
-      io-owner: ${{ steps.calc.outputs.io-owner }}
-      io-repo: ${{ steps.calc.outputs.io-repo }}
-      io-branch: ${{ steps.calc.outputs.io-branch }}
-      io-path: ${{ steps.calc.outputs.io-path }}
+      io-owner: ${{ steps.args.outputs.io-owner }}
+      io-repo: ${{ steps.args.outputs.io-repo }}
+      io-branch: ${{ steps.args.outputs.io-branch }}
+      io-path: ${{ steps.args.outputs.io-path }}
+      io-write-secret-name: ${{ steps.args.outputs.io-write-secret-name }}
 
       # -----
-      base-ig-owner-repo: ${{ steps.calc.outputs.base-ig-owner-repo }}
-      base-ig-ref: ${{ steps.calc.outputs.base-ig-ref }}
+      base-ig-owner-repo: ${{ steps.args.outputs.base-ig-owner-repo }}
+      base-ig-ref: ${{ steps.args.outputs.base-ig-ref }}
       # ---
 
       # ---
-      try-merge: ${{ steps.calc.outputs.try-merge }}
-      base-ref: ${{ steps.calc.outputs.base-ref }}
-      pr-number: ${{ steps.calc.outputs.pr-number }}
-      ig-root: ${{ steps.calc.outputs.ig-root }}
-
-
+      try-merge: ${{ steps.args.outputs.try-merge }}
+      base-ref: ${{ steps.args.outputs.base-ref }}
+      pr-number: ${{ steps.args.outputs.pr-number }}
+      ig-root: ${{ steps.args.outputs.ig-root }}
 
     steps:
-      - id: calc
+      - id: args
         run: |
           
           if [ "${{ github.event_name }}" = "push" ]; then
@@ -96,14 +95,16 @@ jobs:
             echo "::set-output name=ig-read-secret-name::${{ env.IG_READ_SECRET_NAME }}"
             echo "::set-output name=ig-write-secret-name::${{ env.IG_WRITE_SECRET_NAME }}"
 
-            echo "::set-output name=try-merge::false"
-            echo "::set-output name=base-ref::"
-            echo "::set-output name=pr-number::1"
-
             echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
             echo "::set-output name=io-repo::${{ env.IO_REPO }}"
             echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
             echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/branch/${{ github.ref_name }}"
+            echo "::set-output name=io-write-secret-name::${{ env.IO_WRITE_SECRET_NAME }}"
+
+#
+#            echo "::set-output name=try-merge::false"
+#            echo "::set-output name=base-ref::"
+#            echo "::set-output name=pr-number::1"
 
           elif [ "${{ github.event_name }}" = "pull_request_target" ]; then
             echo "::set-output name=owner-repo::${{ github.event.pull_request.head.repo.full_name }}"
@@ -133,14 +134,23 @@ jobs:
     secrets: inherit
 
     with:
-      ig-owner-repo: ${{ needs.calcs.outputs.ig-owner-repo }}
-      ig-ref: ${{ needs.calcs.outputs.ig-ref }}
-      ig-path: ${{ needs.calcs.outputs.ig-path }}
-      ig-read-secret-name: ${{ needs.calcs.outputs.ig-read-secret-name }}
-      ig-write-secret-name: ${{ needs.calcs.outputs.ig-write-secret-name }}
+      ig-owner-repo: ${{ needs.setup.outputs.ig-owner-repo }}
+      ig-ref: ${{ needs.setup.outputs.ig-ref }}
+      ig-path: ${{ needs.setup.outputs.ig-path }}
+      ig-read-secret-name: ${{ needs.setup.outputs.ig-read-secret-name }}
+      ig-write-secret-name: ${{ needs.setup.outputs.ig-write-secret-name }}
 
-      publisher-args: ${{ needs.calcs.outputs.publisher-args }}
-      docker-publisher-tag: ${{ needs.calcs.outputs.docker-publisher-tag }}
+      publisher-args: ${{ needs.setup.outputs.publisher-args }}
+      docker-publisher-tag: ${{ needs.setup.outputs.docker-publisher-tag }}
+      
+
+      io-owner: ${{ needs.setup.outputs.io-owner }}
+      io-repo: ${{ needs.setup.outputs.io-repo }}
+      io-branch: ${{ needs.setup.outputs.io-branch }}
+      io-path: ${{ needs.setup.outputs.io-path }}
+      io-write-secret-name: ${{ needs.setup.outputs.io-write-secret-name }}
+
+
 
 #      base-ref: ${{ needs.vars.outputs.base-ref }}
 #
