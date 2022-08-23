@@ -185,7 +185,7 @@ jobs:
           #git pull origin ${{ inputs.io-branch }}
           [[ -d "${{ inputs.io-path }}" ]] &&  rm -rf "${{ inputs.io-path }}"
           mkdir -p "${{ inputs.io-path }}"
-          cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}"
+          cp -ra "../ig-clone/${{inputs.ig-path}}/output"/* "${{ inputs.io-path }}"
           if [[ ! -f  "IG_BUILDS.md" ]]; then
             echo '# IG Builds  ' > IG_BUILDS.md
           fi
@@ -244,18 +244,18 @@ jobs:
 #            echo "Merge IG build site: $IGLink" >> $GITHUB_STEP_SUMMARY
 #          fi
 #
-#      - name: Pushing IO repo
-#        if: inputs.io-repo != ''
-#        run: |
-#          #set -x
-#          cd io-clone
-#          git add -A
-#          if [[ -z "$(git status --porcelain)" ]]; then
-#            echo NO changes
-#          else
-#            git commit -m "IG: ${{ inputs.owner-repo }}, ref: ${{ inputs.ref }}  run_id: ${{ github.run_id }}, run_number: ${{ github.run_number }}, run_attempt: ${{ github.run_attempt }} with branch SHA: ${{steps.branch.outputs.sha}} and merge SHA: ${{steps.merge.outputs.sha}}"
-#            git push
-#          fi
+      - name: Pushing IO repo
+        if: inputs.io-repo != ''
+        run: |
+          #set -x
+          cd io-clone
+          [[ -d "${{ inputs.io-path }}" ]] && git add ${{ inputs.io-path }}
+          if [[ -z "$(git status --porcelain)" ]]; then
+            echo NO changes
+          else
+            git commit -m "IG: ${{ inputs.ig-owner-repo }}, ref: ${{ inputs.ig-ref }}  run_id: ${{ github.run_id }}, run_number: ${{ github.run_number }}, run_attempt: ${{ github.run_attempt }} with branch SHA: ${{steps.branch.outputs.sha}} and merge SHA: ${{steps.merge.outputs.sha}}"
+            git push
+          fi
 #
 #      - name: Output configuration to summary
 #        if: github.repository == 'ShahimEssaid/fhirware'
