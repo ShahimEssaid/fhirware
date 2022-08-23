@@ -86,7 +86,7 @@ on:
         description: "A path to publish under. If not set, a default is calculated. TODO: document this."
         type: string
 
-      io-write-secrete-name:
+      io-write-secret-name:
         description: The secret name for writing to the IO repository
         type: string
 
