@@ -89,8 +89,6 @@ jobs:
           if [ "${{ github.event_name }}" = "push" ]; then
             echo "::set-output name=ig-owner-repo::${{ env.IG_OWNER_REPO }}"
             echo "::set-output name=ig-ref::${{ env.IG_REF_NAME }}"
-            echo "::set-output name=ig-read-secret-name::${{ env.IG_READ_SECRET_NAME }}"
-            echo "::set-output name=ig-write-secret-name::${{ env.IG_WRITE_SECRET_NAME }}"
           
             echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/branch/${{ github.ref_name }}"
           
@@ -109,6 +107,8 @@ jobs:
           fi
           
           echo "::set-output name=ig-path::${{ env.IG_PATH }}"
+          echo "::set-output name=ig-read-secret-name::${{ env.IG_READ_SECRET_NAME }}"
+          echo "::set-output name=ig-write-secret-name::${{ env.IG_WRITE_SECRET_NAME }}"
           
           
           echo "::set-output name=publisher-args::${{ env.PUBLISHER_ARGS }}"
