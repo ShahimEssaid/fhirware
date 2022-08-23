@@ -56,40 +56,38 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # --- ig branch
-      ig-owner-repo: ${{ steps.args.outputs.ig-owner-repo }}
-      ig-ref: ${{ steps.args.outputs.ig-ref }}
-      ig-path: ${{ steps.args.outputs.ig-path }}
-      ig-read-secret-name: ${{ steps.args.outputs.ig-read-secret-name }}
-      ig-write-secret-name: ${{ steps.args.outputs.ig-write-secret-name }}
+      ig-owner-repo: ${{ steps.arguments.outputs.ig-owner-repo }}
+      ig-ref: ${{ steps.arguments.outputs.ig-ref }}
+      ig-path: ${{ steps.arguments.outputs.ig-path }}
+      ig-read-secret-name: ${{ steps.arguments.outputs.ig-read-secret-name }}
+      ig-write-secret-name: ${{ steps.arguments.outputs.ig-write-secret-name }}
 
       # --- publisher
-      publisher-args: ${{ steps.args.outputs.publisher-args }}
-      docker-publisher-tag: ${{ steps.args.outputs.docker-publisher-tag }}
+      publisher-args: ${{ steps.arguments.outputs.publisher-args }}
+      docker-publisher-tag: ${{ steps.arguments.outputs.docker-publisher-tag }}
 
       # ----- IO
-      io-owner: ${{ steps.args.outputs.io-owner }}
-      io-repo: ${{ steps.args.outputs.io-repo }}
-      io-branch: ${{ steps.args.outputs.io-branch }}
-      io-path: ${{ steps.args.outputs.io-path }}
-      io-write-secret-name: ${{ steps.args.outputs.io-write-secret-name }}
+      io-owner: ${{ steps.arguments.outputs.io-owner }}
+      io-repo: ${{ steps.arguments.outputs.io-repo }}
+      io-branch: ${{ steps.arguments.outputs.io-branch }}
+      io-path: ${{ steps.arguments.outputs.io-path }}
+      io-write-secret-name: ${{ steps.arguments.outputs.io-write-secret-name }}
 
       # -----
-      base-ig-owner-repo: ${{ steps.args.outputs.base-ig-owner-repo }}
-      base-ig-ref: ${{ steps.args.outputs.base-ig-ref }}
+      base-ig-owner-repo: ${{ steps.arguments.outputs.base-ig-owner-repo }}
+      base-ig-ref: ${{ steps.arguments.outputs.base-ig-ref }}
       # ---
 
       # ---
-      try-merge: ${{ steps.args.outputs.try-merge }}
-      base-ref: ${{ steps.args.outputs.base-ref }}
-      pr-number: ${{ steps.args.outputs.pr-number }}
-      ig-root: ${{ steps.args.outputs.ig-root }}
+      try-merge: ${{ steps.arguments.outputs.try-merge }}
+      base-ref: ${{ steps.arguments.outputs.base-ref }}
+      pr-number: ${{ steps.arguments.outputs.pr-number }}
+      ig-root: ${{ steps.arguments.outputs.ig-root }}
 
     steps:
-      - id: args
+      - id: arguments
         run: |
-          
           if [ "${{ github.event_name }}" = "push" ]; then
-          
             echo "::set-output name=ig-owner-repo::${{ env.IG_OWNER_REPO }}"
             echo "::set-output name=ig-ref::${{ env.IG_REF_NAME }}"
             echo "::set-output name=ig-read-secret-name::${{ env.IG_READ_SECRET_NAME }}"
