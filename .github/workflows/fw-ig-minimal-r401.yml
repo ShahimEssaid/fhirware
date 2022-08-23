@@ -30,7 +30,7 @@ defaults:
 
 # Only build the latest branch for an IG, and cancel any in progress builds in favor of the latest.
 concurrency:
-  group: ${{ github.workflow }}_${{ github.ref }}
+  group: ${{ github.repository }}_${{ github.workflow }}_${{ github.ref }}_${{ github.head_ref }}
   cancel-in-progress: true
 
 on:
