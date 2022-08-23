@@ -97,7 +97,7 @@ jobs:
             echo "::set-output name=ig-ref::${{ github.ref_name }}"
             echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/branch/${{ github.ref_name }}"
           
-          elif [ "${{ github.event_name }}" = "pull_request_target" ]; then
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then
             echo "::set-output name=ig-owner-repo::${{ github.event.pull_request.head.repo.full_name }}"
             echo "::set-output name=ig-ref::${{ github.event.pull_request.head.ref }}"
           
