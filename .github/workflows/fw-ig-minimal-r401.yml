@@ -24,6 +24,7 @@ env:
   IO_PATH_PREFIX: ''  # An optional path prefix (from the root of the repo) to publish to. No leading slash but with a trailing slash
   IO_WRITE_SECRET_NAME: GITHUB_TOKEN
 
+
 defaults:
   run:
     shell: bash
