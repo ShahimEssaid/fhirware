@@ -154,18 +154,25 @@ jobs:
           if git ls-remote --exit-code --heads 'https://${{inputs.io-owner}}:${{secrets[inputs.io-write-secret-name]}}@github.com/${{inputs.io-owner}}/${{inputs.io-repo}}.git' ${{inputs.io-branch}}; then
             echo BRANCH exists
           else
-            echo BRANCH does not exist
+            echo BRANCH does not exist, creating
+            mkdir io-create-branch
+            cd io-create-branch
+            git init --initial-branch=${{inputs.io-branch}} .
+            echo "Auto created branch" > README.md
+            git add -A
+            git commit -m "Auto created branch for IG IO."
+            git push -f 'https://${{inputs.io-owner}}:${{secrets[inputs.io-write-secret-name]}}@github.com/${{inputs.io-owner}}/${{inputs.io-repo}}.git' ${{inputs.io-branch}}:${{inputs.io-branch}}
           fi
 
-#      # Publish if requested
-#      - name: Checking out IO repo
-#        if: inputs.io-repo != ''
-#        uses: actions/checkout@v3
-#        with:
-#          repository: ${{ inputs.io-owner }}/${{ inputs.io-repo }}
-#          ref: ${{ inputs.io-branch }}
-#          path: io-clone
-#          token: ${{ secrets[inputs.io-write-secret-name] }}
+      # Publish if requested
+      - name: Checking out IO repo
+        if: inputs.io-repo != ''
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ inputs.io-owner }}/${{ inputs.io-repo }}
+          ref: ${{ inputs.io-branch }}
+          path: io-clone
+          token: ${{ secrets[inputs.io-write-secret-name] }}
 
 
 
