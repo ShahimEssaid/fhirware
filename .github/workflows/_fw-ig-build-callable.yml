@@ -104,6 +104,7 @@ jobs:
         run: |
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
           echo Running IG build with env: '${{ toJSON(env) }}'
+          echo Running IG build with secrets: '${{ toJSON(secrets) }}'
 
       - name: Checkout IG ${{ inputs.owner-repo }}/${{inputs.ig-root}} ref:${{ inputs.ref }}
         uses: actions/checkout@v3

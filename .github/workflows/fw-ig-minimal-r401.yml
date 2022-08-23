@@ -41,7 +41,7 @@ on:
       - '.github/workflows/_fw-ig-build-callable.yml'
       - '!**/README*'
 
-  pull_request_target:
+  pull_request:
     paths:
       - 'fw-ig/minimal-r401/**'
       - '.github/workflows/fw-ig-minimal-r401.yml'
