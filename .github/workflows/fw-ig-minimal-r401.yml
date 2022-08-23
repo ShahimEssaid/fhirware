@@ -46,6 +46,8 @@ on:
   pull_request_target:
     paths:
       - 'fw-ig/minimal-r401/**'
+      - '.github/workflows/fw-ig-minimal-r401.yml'
+      - '.github/workflows/_fw-ig-build-callable.yml'
       - '!**/README*'
 
 jobs:
