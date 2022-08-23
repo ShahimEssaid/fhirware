@@ -69,6 +69,17 @@ jobs:
             echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
             echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/branch/${{ github.ref_name }}"
             echo "::set-output name=io-write-secret-name::${{ env.IO_WRITE_SECRET_NAME }}"
+               
+          elif [ "${{ github.event_name }}" = "pull_request_target" ]; then
+            echo "::set-output name=owner-repo::${{ github.event.pull_request.head.repo.full_name }}"
+            echo "::set-output name=ref::${{ github.event.pull_request.head.ref }}"
+            echo "::set-output name=try-merge::true"
+            echo "::set-output name=base-ref::${{ github.event.pull_request.base.ref }}"
+            echo "::set-output name=pr-number::${{ github.event.number }}"
+            echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
+            echo "::set-output name=io-repo::${{ env.IO_REPO }}"
+            echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
+            echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/pr-${{ github.event.number }}/${{ github.event.pull_request.base.ref }}/FROM-${{ github.event.pull_request.head.repo.full_name }}/${{ github.event.pull_request.head.ref }}"
           else
             echo EXITING DUE TO UNKNOWN EVENT NAME.
             exit 1
