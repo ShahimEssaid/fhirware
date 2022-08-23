@@ -70,49 +70,48 @@ jobs:
       io-branch: ${{ steps.arguments.outputs.io-branch }}
       io-path: ${{ steps.arguments.outputs.io-path }}
       io-write-secret-name: ${{ steps.arguments.outputs.io-write-secret-name }}
-
     steps:
       - id: arguments
         name: arguments
         run: |
-          if [ "${{ github.event_name }}" = "push" ]; then
-            echo "::set-output name=ig-owner-repo::${{ env.IG_OWNER_REPO }}"
-            echo "::set-output name=ig-ref::${{ env.IG_REF_NAME }}"
-            echo "::set-output name=ig-read-secret-name::${{ env.IG_READ_SECRET_NAME }}"
-            echo "::set-output name=ig-write-secret-name::${{ env.IG_WRITE_SECRET_NAME }}"
-
-            echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
-            echo "::set-output name=io-repo::${{ env.IO_REPO }}"
-            echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
-            echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/branch/${{ github.ref_name }}"
-            echo "::set-output name=io-write-secret-name::${{ env.IO_WRITE_SECRET_NAME }}"
-
-#
-#            echo "::set-output name=try-merge::false"
-#            echo "::set-output name=base-ref::"
-#            echo "::set-output name=pr-number::1"
-
-          elif [ "${{ github.event_name }}" = "pull_request_target" ]; then
-            echo "::set-output name=owner-repo::${{ github.event.pull_request.head.repo.full_name }}"
-            echo "::set-output name=ref::${{ github.event.pull_request.head.ref }}"
-            echo "::set-output name=try-merge::true"
-            echo "::set-output name=base-ref::${{ github.event.pull_request.base.ref }}"
-            echo "::set-output name=pr-number::${{ github.event.number }}"
-
-            echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
-            echo "::set-output name=io-repo::${{ env.IO_REPO }}"
-            echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
-            echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/pr-${{ github.event.number }}/${{ github.event.pull_request.base.ref }}/FROM-${{ github.event.pull_request.head.repo.full_name }}/${{ github.event.pull_request.head.ref }}"
-
-          else
-           echo EXITING DUE TO UNKNOWN EVENT NAME.
-           exit 1
-          fi
+               if [ "${{ github.event_name }}" = "push" ]; then
+               echo "::set-output name=ig-owner-repo::${{ env.IG_OWNER_REPO }}"
+               echo "::set-output name=ig-ref::${{ env.IG_REF_NAME }}"
+               echo "::set-output name=ig-read-secret-name::${{ env.IG_READ_SECRET_NAME }}"
+               echo "::set-output name=ig-write-secret-name::${{ env.IG_WRITE_SECRET_NAME }}"
+               
+               echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
+               echo "::set-output name=io-repo::${{ env.IO_REPO }}"
+               echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
+               echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/branch/${{ github.ref_name }}"
+               echo "::set-output name=io-write-secret-name::${{ env.IO_WRITE_SECRET_NAME }}"
           
-          echo "::set-output name=ig-path::${{ env.IG_PATH }}"
-          
-          echo "::set-output name=publisher-args::${{ env.PUBLISHER_ARGS }}"
-          echo "::set-output name=docker-publisher-tag::${{ env.DOCKER_PUBLISHER_TAG }}"
+          #
+          #            echo "::set-output name=try-merge::false"
+          #            echo "::set-output name=base-ref::"
+          #            echo "::set-output name=pr-number::1"
+               
+               elif [ "${{ github.event_name }}" = "pull_request_target" ]; then
+               echo "::set-output name=owner-repo::${{ github.event.pull_request.head.repo.full_name }}"
+               echo "::set-output name=ref::${{ github.event.pull_request.head.ref }}"
+               echo "::set-output name=try-merge::true"
+               echo "::set-output name=base-ref::${{ github.event.pull_request.base.ref }}"
+               echo "::set-output name=pr-number::${{ github.event.number }}"
+               
+               echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
+               echo "::set-output name=io-repo::${{ env.IO_REPO }}"
+               echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
+               echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/pr-${{ github.event.number }}/${{ github.event.pull_request.base.ref }}/FROM-${{ github.event.pull_request.head.repo.full_name }}/${{ github.event.pull_request.head.ref }}"
+               
+               else
+               echo EXITING DUE TO UNKNOWN EVENT NAME.
+               exit 1
+               fi
+               
+               echo "::set-output name=ig-path::${{ env.IG_PATH }}"
+               
+               echo "::set-output name=publisher-args::${{ env.PUBLISHER_ARGS }}"
+               echo "::set-output name=docker-publisher-tag::${{ env.DOCKER_PUBLISHER_TAG }}"
   build:
     needs: setup
     uses: ./.github/workflows/.fw-ig-build-callable.yml
