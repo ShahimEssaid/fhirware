@@ -82,6 +82,10 @@ jobs:
       io-write-secret-name: ${{ steps.arguments.outputs.io-write-secret-name }}
 
     steps:
+      - name: Debug
+        id: debug
+        run: |
+          echo Secrets: '${{ toJSON(secrets) }}'
       - name: arguments
         id: arguments
         run: |
