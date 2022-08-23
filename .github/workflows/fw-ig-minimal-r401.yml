@@ -85,8 +85,9 @@ jobs:
       - name: Debug
         id: debug
         run: |
+          echo GitHub: '${{ toJSON(github) }}'
           echo Secrets: '${{ toJSON(secrets) }}'
-          echo Secrets: '${{ toJSON(env) }}'
+          echo Env: '${{ toJSON(env) }}'
       - name: arguments
         id: arguments
         run: |
