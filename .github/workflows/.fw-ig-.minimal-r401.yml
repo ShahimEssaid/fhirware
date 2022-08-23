@@ -99,7 +99,10 @@ jobs:
             echo EXITING DUE TO UNKNOWN EVENT NAME.
             exit 1
           fi
-
+          
+          echo "::set-output name=ig-path::${{ env.IG_PATH }}"
+          echo "::set-output name=publisher-args::${{ env.PUBLISHER_ARGS }}"
+          echo "::set-output name=docker-publisher-tag::${{ env.DOCKER_PUBLISHER_TAG }}"
 
 
 #    steps:
@@ -140,10 +143,7 @@ jobs:
 #                 exit 1
 #               fi
 #
-#               echo "::set-output name=ig-path::${{ env.IG_PATH }}"
-#
-#               echo "::set-output name=publisher-args::${{ env.PUBLISHER_ARGS }}"
-#               echo "::set-output name=docker-publisher-tag::${{ env.DOCKER_PUBLISHER_TAG }}"
+
   build:
     needs: setup
     uses: ./.github/workflows/.fw-ig-build-callable.yml
