@@ -89,7 +89,6 @@ on:
       io-write-secrete-name:
         description: The secret name for writing to the IO repository
         type: string
-        required: true
 
     #      debug:
 #        description: "Turn on some debugging output to the job summary"
