@@ -51,7 +51,7 @@ on:
 jobs:
 
   # Do any setup needed to create job output parameters needed to the later build job
-  setup:
+  test:
     name: Build vars
     runs-on: ubuntu-latest
 #    outputs:
