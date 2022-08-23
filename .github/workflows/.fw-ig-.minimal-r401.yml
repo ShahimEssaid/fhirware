@@ -79,7 +79,6 @@ jobs:
             echo "::set-output name=ig-ref::${{ env.IG_REF_NAME }}"
             echo "::set-output name=ig-read-secret-name::${{ env.IG_READ_SECRET_NAME }}"
             echo "::set-output name=ig-write-secret-name::${{ env.IG_WRITE_SECRET_NAME }}"
-
             echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
             echo "::set-output name=io-repo::${{ env.IO_REPO }}"
             echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
@@ -159,7 +158,6 @@ jobs:
 
       publisher-args: ${{ needs.setup.outputs.publisher-args }}
       docker-publisher-tag: ${{ needs.setup.outputs.docker-publisher-tag }}
-
 
       io-owner: ${{ needs.setup.outputs.io-owner }}
       io-repo: ${{ needs.setup.outputs.io-repo }}

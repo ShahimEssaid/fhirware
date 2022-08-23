@@ -80,6 +80,7 @@ on:
 
       io-branch:
         description: The branch to use for publishing the IG's output. gh-pages by default so it works on github.io
+        type: string
 
       io-path:
         description: "A path to publish under. If not set, a default is calculated. TODO: document this."
