@@ -85,6 +85,7 @@ jobs:
       - name: Debug
         id: debug
         run: |
+          echo concurrency group: ${{ github.repository }}_${{ github.workflow }}_${{ github.ref }}_${{ github.head_ref }} 
           echo GitHub: '${{ toJSON(github) }}'
           echo Secrets: '${{ toJSON(secrets) }}'
           echo Env: '${{ toJSON(env) }}'
