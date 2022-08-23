@@ -58,7 +58,21 @@ jobs:
       - name: arguments
         id: arguments
         run: |
-          echo hello
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "::set-output name=ig-owner-repo::${{ env.IG_OWNER_REPO }}"
+            echo "::set-output name=ig-ref::${{ env.IG_REF_NAME }}"
+            echo "::set-output name=ig-read-secret-name::${{ env.IG_READ_SECRET_NAME }}"
+            echo "::set-output name=ig-write-secret-name::${{ env.IG_WRITE_SECRET_NAME }}"
+
+            echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
+            echo "::set-output name=io-repo::${{ env.IO_REPO }}"
+            echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
+            echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/branch/${{ github.ref_name }}"
+            echo "::set-output name=io-write-secret-name::${{ env.IO_WRITE_SECRET_NAME }}"
+          else
+            echo EXITING DUE TO UNKNOWN EVENT NAME.
+            exit 1
+          fi
 
 #    outputs:
 #      # --- ig branch
@@ -81,7 +95,7 @@ jobs:
 #      - name: arguments
 #        id: arguments
 #        run: |
-#               if [ "${{ github.event_name }}" = "push" ]; then
+#           if [ "${{ github.event_name }}" = "push" ]; then
 #               echo "::set-output name=ig-owner-repo::${{ env.IG_OWNER_REPO }}"
 #               echo "::set-output name=ig-ref::${{ env.IG_REF_NAME }}"
 #               echo "::set-output name=ig-read-secret-name::${{ env.IG_READ_SECRET_NAME }}"
