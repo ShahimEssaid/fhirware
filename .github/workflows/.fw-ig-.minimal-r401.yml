@@ -116,7 +116,7 @@ jobs:
 #               echo "::set-output name=io-repo::${{ env.IO_REPO }}"
 #               echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
 #               echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/branch/${{ github.ref_name }}"
-#               echo "::set-output name=io-write-secret-name::${{ env.IO_WRITE_SECRET_NAME }}"
+#               echo "::set-output name=io-write-secrete-name::${{ env.IO_WRITE_SECRET_NAME }}"
 #
 #          #
 #          #            echo "::set-output name=try-merge::false"
