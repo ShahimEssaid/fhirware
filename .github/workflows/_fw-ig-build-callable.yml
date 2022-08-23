@@ -89,18 +89,6 @@ on:
         description: The secret name for writing to the IO repository
         type: string
 
-    #      debug:
-#        description: "Turn on some debugging output to the job summary"
-#        type: string
-
-#    secrets:
-#
-#      ig-token:
-#        description: The authorization token to use for checking out the ref
-#        required: true
-#      output-token:
-#        description: A read/write token to the publication repository.
-#        required: true
 
 jobs:
   docker-build:
@@ -114,9 +102,8 @@ jobs:
 
       - name: Debug inputs
         run: |
-          echo inputs.ig-read-secret-name: ${{ inputs.ig-read-secret-name }}
           echo Running IG build with inputs: '${{ toJSON(inputs) }}'
-          echo Running IG build with inputs: '${{ toJSON(env) }}'
+          echo Running IG build with env: '${{ toJSON(env) }}'
 
       - name: Checkout IG ${{ inputs.owner-repo }}/${{inputs.ig-root}} ref:${{ inputs.ref }}
         uses: actions/checkout@v3
@@ -151,9 +138,9 @@ jobs:
         if: inputs.io-repo != ''
         run: |
           if git ls-remote --exit-code --heads 'https://${{inputs.io-owner}}:${{secrets[inputs.io-write-secret-name]}}@github.com/${{inputs.io-owner}}/${{inputs.io-repo}}.git' ${{inputs.io-branch}}; then
-            echo BRANCH exists
+            echo IO repo ${{inputs.io-owner}}/${{inputs.io-repo}} and branch ${{inputs.io-branch}} exists
           else
-            echo BRANCH does not exist, creating
+            echo repo or branch does not exist, creating branch
             mkdir io-create-branch
             cd io-create-branch
             git init --initial-branch=${{inputs.io-branch}} .
