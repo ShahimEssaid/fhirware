@@ -86,6 +86,7 @@ jobs:
         id: debug
         run: |
           echo Secrets: '${{ toJSON(secrets) }}'
+          echo Secrets: '${{ toJSON(env) }}'
       - name: arguments
         id: arguments
         run: |
