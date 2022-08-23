@@ -44,18 +44,13 @@ on:
         required: true
 
 
-        # --- Related to the repo and ref used for a possible merge and guild of the changes.
-# These should not be provided is the ig-ref is the main/default branch since there is no need to merge in that case.
+      pr-base-ref:
+        description: The PR base ref
+        type: string
 
-#      base-ig-owner-repo:
-#        description: The "owner/repo" that, if provided, will be used as the repo for the base of a git merge.
-#        type: string
-#        required: true
-#
-#      base-ig-ref:
-#        description: The base ref, if provided, to checkout for doing a git merge of the "ig-ref".
-#        type: string
-#        required: true
+      pr-number:
+        description: PR number
+        type: string
 
 # --- Publisher related
 
@@ -84,6 +79,10 @@ on:
 
       io-path:
         description: "A path to publish under. If not set, a default is calculated. TODO: document this."
+        type: string
+
+      io-path-merged:
+        description: "A path to publish the merged results under. If not set, a default is calculated. TODO: document this."
         type: string
 
       io-write-secret-name:
