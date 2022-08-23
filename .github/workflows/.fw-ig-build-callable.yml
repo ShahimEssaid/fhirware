@@ -250,6 +250,7 @@ jobs:
         run: |
           #set -x
           cd io-clone
+          git add IG_BUILDS.md
           [[ -d "${{ inputs.io-path }}" ]] && git add ${{ inputs.io-path }}
           if [[ -z "$(git status --porcelain)" ]]; then
             echo NO changes
