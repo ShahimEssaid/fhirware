@@ -54,22 +54,22 @@ jobs:
   setup:
     name: Build vars
     runs-on: ubuntu-latest
-    outputs:
-      # --- ig branch
-      ig-owner-repo: ${{ steps.arguments.outputs.ig-owner-repo }}
-      ig-ref: ${{ steps.arguments.outputs.ig-ref }}
-      ig-path: ${{ steps.arguments.outputs.ig-path }}
-      ig-read-secret-name: ${{ steps.arguments.outputs.ig-read-secret-name }}
-      ig-write-secret-name: ${{ steps.arguments.outputs.ig-write-secret-name }}
-      # --- publisher
-      publisher-args: ${{ steps.arguments.outputs.publisher-args }}
-      docker-publisher-tag: ${{ steps.arguments.outputs.docker-publisher-tag }}
-      # ----- IO
-      io-owner: ${{ steps.arguments.outputs.io-owner }}
-      io-repo: ${{ steps.arguments.outputs.io-repo }}
-      io-branch: ${{ steps.arguments.outputs.io-branch }}
-      io-path: ${{ steps.arguments.outputs.io-path }}
-      io-write-secret-name: ${{ steps.arguments.outputs.io-write-secret-name }}
+#    outputs:
+#      # --- ig branch
+#      ig-owner-repo: ${{ steps.arguments.outputs.ig-owner-repo }}
+#      ig-ref: ${{ steps.arguments.outputs.ig-ref }}
+#      ig-path: ${{ steps.arguments.outputs.ig-path }}
+#      ig-read-secret-name: ${{ steps.arguments.outputs.ig-read-secret-name }}
+#      ig-write-secret-name: ${{ steps.arguments.outputs.ig-write-secret-name }}
+#      # --- publisher
+#      publisher-args: ${{ steps.arguments.outputs.publisher-args }}
+#      docker-publisher-tag: ${{ steps.arguments.outputs.docker-publisher-tag }}
+#      # ----- IO
+#      io-owner: ${{ steps.arguments.outputs.io-owner }}
+#      io-repo: ${{ steps.arguments.outputs.io-repo }}
+#      io-branch: ${{ steps.arguments.outputs.io-branch }}
+#      io-path: ${{ steps.arguments.outputs.io-path }}
+#      io-write-secret-name: ${{ steps.arguments.outputs.io-write-secret-name }}
 
     steps:
       - name: arguments
