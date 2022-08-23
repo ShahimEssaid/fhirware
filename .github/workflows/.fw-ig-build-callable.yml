@@ -177,30 +177,25 @@ jobs:
           token: ${{ secrets[inputs.io-write-secret-name] }}
 
 
-
-
-
-
-
-#      - name: Publishing IG branch
-#        if: inputs.io-repo != ''
-#        run: |
-#          set -x
-#          cd io-clone
-#          git pull origin ${{ inputs.io-branch }}
-#          [[ -d "${{ inputs.io-path }}" ]] &&  rm -rf "${{ inputs.io-path }}"
-#          mkdir -p "${{ inputs.io-path }}"
-#          cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}"
-#          if [[ ! -f  "IG_BUILDS.md" ]]; then
-#            echo '# IG Builds  ' > IG_BUILDS.md
-#          fi
-#          IGLink="[${{ inputs.io-path }}](https://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/index.html?version=${{steps.branch.outputs.sha}})"
-#          {
-#            cat IG_BUILDS.md |  grep -v '${{ inputs.io-path }}' ;
-#            printf '%s  \n' "$IGLink";
-#          } | sort > IG_BUILDS.md.new
-#          mv -f IG_BUILDS.md.new IG_BUILDS.md
-#          echo "Branch IG build site: $IGLink" >> $GITHUB_STEP_SUMMARY
+      - name: Publishing IG branch
+        if: inputs.io-repo != ''
+        run: |
+          set -x
+          cd io-clone
+          #git pull origin ${{ inputs.io-branch }}
+          [[ -d "${{ inputs.io-path }}" ]] &&  rm -rf "${{ inputs.io-path }}"
+          mkdir -p "${{ inputs.io-path }}"
+          cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}"
+          if [[ ! -f  "IG_BUILDS.md" ]]; then
+            echo '# IG Builds  ' > IG_BUILDS.md
+          fi
+          IGLink="[${{ inputs.io-path }}](https://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}/index.html?version=${{steps.branch.outputs.sha}})"
+          {
+            cat IG_BUILDS.md |  grep -v '${{ inputs.io-path }}' ;
+            printf '%s  \n' "$IGLink";
+          } | sort > IG_BUILDS.md.new
+          mv -f IG_BUILDS.md.new IG_BUILDS.md
+          echo "Branch IG build site: $IGLink" >> $GITHUB_STEP_SUMMARY
 #
 #      - name: Building merge with base if needed
 #        id: merge
