@@ -56,6 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: arguments
+        id: arguments
         run: |
           echo hello
 
