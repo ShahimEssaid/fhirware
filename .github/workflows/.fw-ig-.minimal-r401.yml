@@ -73,19 +73,20 @@ jobs:
       io-path: ${{ steps.arguments.outputs.io-path }}
       io-write-secret-name: ${{ steps.arguments.outputs.io-write-secret-name }}
 
-      # -----
-      base-ig-owner-repo: ${{ steps.arguments.outputs.base-ig-owner-repo }}
-      base-ig-ref: ${{ steps.arguments.outputs.base-ig-ref }}
-      # ---
-
-      # ---
-      try-merge: ${{ steps.arguments.outputs.try-merge }}
-      base-ref: ${{ steps.arguments.outputs.base-ref }}
-      pr-number: ${{ steps.arguments.outputs.pr-number }}
-      ig-root: ${{ steps.arguments.outputs.ig-root }}
+#      # -----
+#      base-ig-owner-repo: ${{ steps.arguments.outputs.base-ig-owner-repo }}
+#      base-ig-ref: ${{ steps.arguments.outputs.base-ig-ref }}
+#      # ---
+#
+#      # ---
+#      try-merge: ${{ steps.arguments.outputs.try-merge }}
+#      base-ref: ${{ steps.arguments.outputs.base-ref }}
+#      pr-number: ${{ steps.arguments.outputs.pr-number }}
+#      ig-root: ${{ steps.arguments.outputs.ig-root }}
 
     steps:
       - id: arguments
+        name: arguments
         run: |
           if [ "${{ github.event_name }}" = "push" ]; then
             echo "::set-output name=ig-owner-repo::${{ env.IG_OWNER_REPO }}"
