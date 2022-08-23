@@ -71,8 +71,7 @@ jobs:
       io-path: ${{ steps.arguments.outputs.io-path }}
       io-write-secret-name: ${{ steps.arguments.outputs.io-write-secret-name }}
     steps:
-      - id: arguments
-        name: arguments
+      - name: arguments
         run: |
                if [ "${{ github.event_name }}" = "push" ]; then
                echo "::set-output name=ig-owner-repo::${{ env.IG_OWNER_REPO }}"
