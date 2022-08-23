@@ -145,33 +145,25 @@ jobs:
 #
 #               echo "::set-output name=publisher-args::${{ env.PUBLISHER_ARGS }}"
 #               echo "::set-output name=docker-publisher-tag::${{ env.DOCKER_PUBLISHER_TAG }}"
-#  build:
-#    needs: setup
-#    uses: ./.github/workflows/.fw-ig-build-callable.yml
-#    secrets: inherit
-#
-#    with:
-#      ig-owner-repo: ${{ needs.setup.outputs.ig-owner-repo }}
-#      ig-ref: ${{ needs.setup.outputs.ig-ref }}
-#      ig-path: ${{ needs.setup.outputs.ig-path }}
-#      ig-read-secret-name: ${{ needs.setup.outputs.ig-read-secret-name }}
-#      ig-write-secret-name: ${{ needs.setup.outputs.ig-write-secret-name }}
-#
-#      publisher-args: ${{ needs.setup.outputs.publisher-args }}
-#      docker-publisher-tag: ${{ needs.setup.outputs.docker-publisher-tag }}
-#
-#
-#      io-owner: ${{ needs.setup.outputs.io-owner }}
-#      io-repo: ${{ needs.setup.outputs.io-repo }}
-#      io-branch: ${{ needs.setup.outputs.io-branch }}
-#      io-path: ${{ needs.setup.outputs.io-path }}
-#      io-write-secret-name: ${{ needs.setup.outputs.io-write-secret-name }}
+  build:
+    needs: setup
+    uses: ./.github/workflows/.fw-ig-build-callable.yml
+    secrets: inherit
+
+    with:
+      ig-owner-repo: ${{ needs.setup.outputs.ig-owner-repo }}
+      ig-ref: ${{ needs.setup.outputs.ig-ref }}
+      ig-path: ${{ needs.setup.outputs.ig-path }}
+      ig-read-secret-name: ${{ needs.setup.outputs.ig-read-secret-name }}
+      ig-write-secret-name: ${{ needs.setup.outputs.ig-write-secret-name }}
+
+      publisher-args: ${{ needs.setup.outputs.publisher-args }}
+      docker-publisher-tag: ${{ needs.setup.outputs.docker-publisher-tag }}
 
 
+      io-owner: ${{ needs.setup.outputs.io-owner }}
+      io-repo: ${{ needs.setup.outputs.io-repo }}
+      io-branch: ${{ needs.setup.outputs.io-branch }}
+      io-path: ${{ needs.setup.outputs.io-path }}
+      io-write-secret-name: ${{ needs.setup.outputs.io-write-secret-name }}
 
-#      base-ref: ${{ needs.vars.outputs.base-ref }}
-#
-#      io-owner: ${{ needs.vars.outputs.io-owner }}
-#      io-repo: ${{ needs.vars.outputs.io-repo }}
-#      io-branch: ${{ needs.vars.outputs.io-branch }}
-#      io-path: ${{ needs.vars.outputs.io-path }}
