@@ -186,7 +186,7 @@ jobs:
           set -x
           # echo doing base merge and build
           cd ig-clone
-          # git fetch --unshallow
+          git fetch --unshallow
           git clean -fdx
           git remote add upstream "https://github.com/${{ github.repository }}"
           git fetch --all
