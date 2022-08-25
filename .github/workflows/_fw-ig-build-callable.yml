@@ -176,7 +176,6 @@ jobs:
           } | sort > IG_BUILDS.md.new
           mv -f IG_BUILDS.md.new IG_BUILDS.md
           echo "Branch IG build site: $IGLink" >> $GITHUB_STEP_SUMMARY
-
       - name: Building IG from merge
         id: merge
         if: inputs.pr-base-ref != ''
