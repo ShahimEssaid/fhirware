@@ -176,6 +176,7 @@ jobs:
           } | sort > IG_BUILDS.md.new
           mv -f IG_BUILDS.md.new IG_BUILDS.md
           echo "Branch IG build site: $IGLink" >> $GITHUB_STEP_SUMMARY
+
       - name: Building IG from merge
         id: merge
         if: inputs.pr-base-ref != ''
@@ -183,9 +184,9 @@ jobs:
         # TODO: try to optimize the full fetch
         run: |
           set -x
-#          echo doing base merge and build
+          #          echo doing base merge and build
           cd ig-clone
-#          git fetch --unshallow
+          #          git fetch --unshallow
           git clean -fdx
           git remote add upstream "https://github.com/${{ github.repository }}"
           git fetch --all
