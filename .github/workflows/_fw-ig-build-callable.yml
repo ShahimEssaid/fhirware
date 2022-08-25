@@ -106,22 +106,15 @@ jobs:
           echo Running IG build with env: '${{ toJSON(env) }}'
           echo Running IG build with secrets: '${{ toJSON(secrets) }}'
 
-      - name: Checkout IG ${{ inputs.owner-repo }}/${{inputs.ig-root}} ref:${{ inputs.ref }}
+      - name: Checkout IG ${{ inputs.owner-repo }}/${{inputs.ig-root}} ref:${{ inputs.ig-ref }}
         uses: actions/checkout@v3
         with:
           repository: ${{ inputs.ig-owner-repo }}
           ref: ${{ inputs.ig-ref }}
           path: ig-clone
           token: ${{ secrets[inputs.ig-read-secret-name] }}
-#
-#      - name: exit early
-#        run: |
-#          cd ig-clone
-#          cat .git/config
-#          cat .git/shallow
-#          exit 0
 
-      - name: Building IG
+      - name: Building IG from HEAD ref
         id: branch
         run: |
           set -x
@@ -184,53 +177,56 @@ jobs:
           mv -f IG_BUILDS.md.new IG_BUILDS.md
           echo "Branch IG build site: $IGLink" >> $GITHUB_STEP_SUMMARY
 #
-#      - name: Building merge with base if needed
-#        id: merge
-#        if: inputs.base-ref != ''
-#        # try to merge and build again
-#        # TODO: try to optimize the full fetch
-#        run: |
-#          set -x
+      - name: Building IG from merge
+        id: merge
+        if: inputs.pr-base-ref != ''
+        # try to merge and build again
+        # TODO: try to optimize the full fetch
+        run: |
+          set -x
 #          echo doing base merge and build
-#          cd ig-clone
+          cd ig-clone
 #          git fetch --unshallow
-#          git clean -fdx
-#          git remote add upstream "https://github.com/${{ github.repository }}"
-#          git fetch --all
-#          git checkout -b upstream-${{ inputs.base-ref }} --track  "upstream/${{ inputs.base-ref }}"
-#          if ! git merge-base --is-ancestor upstream-${{ inputs.base-ref }} upstream/${{ inputs.base-ref }}; then
-#            if git merge "${{ inputs.ref }}"; then
-#              echo "::set-output name=sha::$(git rev-parse HEAD)"
-#              echo merge was successful
-#              #mkdir -p "${{inputs.ig-root}}/output"; echo hello merged branch build $(date) > "${{inputs.ig-root}}/output/index.html"
-#              docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-root}}:/ig" "sessaid/ig-publisher:${{inputs.docker-publisher-tag}}"  ${{ inputs.publisher-args }}
-#            else
-#              echo merge has conflicts
-#              git merge --abort
-#            fi
-#            echo "::set-output name=skip::false"
-#          else
-#            echo "::set-output name=skip::true"
-#          fi
-#
-#      - name: Publishing IG merged build
-#        if: inputs.base-ref != '' && inputs.io-repo != ''
-#        run: |
-#          set -x
-#          cd io-clone
-#          [[ -d "${{ inputs.io-path }}--merged" ]] &&  rm -rf "${{ inputs.io-path }}--merged"
-#          if [[ ${{ steps.merge.outputs.skip }} == false ]]; then
-#            mkdir -p "${{ inputs.io-path }}--merged"
-#            cp -ra "../ig-clone/${{inputs.ig-root}}/output"/* "${{ inputs.io-path }}--merged"
-#            IGLink="[${{ inputs.io-path }}--merged](https://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path }}--merged/index.html?version=${{steps.merge.outputs.sha}})"
-#            {
-#              cat IG_BUILDS.md;
-#              printf '%s  \n' "$IGLink";
-#            } | sort > IG_BUILDS.md.new
-#            mv -f IG_BUILDS.md.new IG_BUILDS.md
-#            echo "Merge IG build site: $IGLink" >> $GITHUB_STEP_SUMMARY
-#          fi
-#
+          git clean -fdx
+          git remote add upstream "https://github.com/${{ github.repository }}"
+          git fetch --all
+          git checkout -b upstream-${{ inputs.pr-base-ref }} --track  "upstream/${{ inputs.pr-base-ref }}"
+          # check if the pr ref and base have diverged, and need a merge
+          if ! git merge-base --is-ancestor upstream-${{ inputs.pr-base-ref }} upstream/${{ inputs.base-ref }}; then
+            # Diverged
+            if git merge "${{ inputs.ig-ref }}"; then
+              # Merge succeeded
+              echo "::set-output name=sha::$(git rev-parse HEAD)"
+              echo merge was successful
+              #mkdir -p "${{inputs.ig-path}}/output"; echo hello merged branch build $(date) > "${{inputs.ig-root}}/output/index.html"
+              docker run --rm --volume "${GITHUB_WORKSPACE}/ig-clone/${{inputs.ig-path}}:/ig" "sessaid/ig-publisher:${{inputs.docker-publisher-tag}}"  ${{ inputs.publisher-args }}
+            else
+              echo merge has conflicts
+              git merge --abort
+            fi
+            echo "::set-output name=skip-merge::false"
+          else
+            echo "::set-output name=skip-merge::true"
+          fi
+
+      - name: Publishing IG merged build
+        if: inputs.pr-base-ref != '' && inputs.io-repo != ''
+        run: |
+          set -x
+          cd io-clone
+          [[ -d "${{ inputs.io-path-merged }}" ]] &&  rm -rf "${{ inputs.io-path-merged }}"
+          if [[ ${{ steps.merge.outputs.skip-merge }} == false ]]; then
+            mkdir -p "${{ inputs.io-path-merged }}"
+            cp -ra "../ig-clone/${{inputs.ig-path}}/output"/* "${{ inputs.io-path-merged }}"
+            IGLink="[${{ inputs.io-path-merged }}](https://${{ inputs.io-owner }}.github.io/${{ inputs.io-repo }}/${{ inputs.io-path-merged }}/index.html?version=${{steps.merge.outputs.sha}})"
+            {
+              cat IG_BUILDS.md;
+              printf '%s  \n' "$IGLink";
+            } | sort > IG_BUILDS.md.new
+            mv -f IG_BUILDS.md.new IG_BUILDS.md
+            echo "Merge IG build site: $IGLink" >> $GITHUB_STEP_SUMMARY
+          fi
+
 
 
       - name: Pushing IO repo

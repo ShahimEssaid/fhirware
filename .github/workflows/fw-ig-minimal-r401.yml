@@ -103,7 +103,7 @@ jobs:
             echo "::set-output name=pr-base-ref::${{ github.event.pull_request.base.ref }}"
             echo "::set-output name=pr-number::${{ github.event.pull_request.number }}"
             
-            echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/pull/${{ github.event.number }}/FROM_${{ github.event.pull_request.head.repo.full_name }}_${{ github.event.pull_request.head.ref }}_TO_${{ github.event.pull_request.base.ref }}/"
+            echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/pull/${{ github.event.pull_request.number }}/FROM_${{ github.event.pull_request.head.repo.full_name }}_${{ github.event.pull_request.head.ref }}_TO_${{ github.event.pull_request.base.ref }}/"
             echo "::set-output name=io-path-merged::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/pull/${{ github.event.pull_request.number }}/FROM_${{ github.event.pull_request.head.repo.full_name }}_${{ github.event.pull_request.head.ref }}_TO_${{ github.event.pull_request.base.ref }}_MERGED/"
           else
             echo EXITING DUE TO UNKNOWN EVENT NAME.
@@ -113,7 +113,6 @@ jobs:
           echo "::set-output name=ig-path::${{ env.IG_PATH }}"
           echo "::set-output name=ig-read-secret-name::${{ env.IG_READ_SECRET_NAME }}"
           echo "::set-output name=ig-write-secret-name::${{ env.IG_WRITE_SECRET_NAME }}"
-          
           
           echo "::set-output name=publisher-args::${{ env.PUBLISHER_ARGS }}"
           echo "::set-output name=docker-publisher-tag::${{ env.DOCKER_PUBLISHER_TAG }}"
