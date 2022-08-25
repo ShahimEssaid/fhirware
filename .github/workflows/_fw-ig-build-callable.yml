@@ -236,6 +236,7 @@ jobs:
           cd io-clone
           git add IG_BUILDS.md
           [[ -d "${{ inputs.io-path }}" ]] && git add ${{ inputs.io-path }}
+          [[ -d "${{ inputs.io-path-merged }}" ]] && git add ${{ inputs.io-path-merged }}
           if [[ -z "$(git status --porcelain)" ]]; then
             echo NO changes
           else

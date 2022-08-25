@@ -103,8 +103,8 @@ jobs:
             echo "::set-output name=pr-base-ref::${{ github.event.pull_request.base.ref }}"
             echo "::set-output name=pr-number::${{ github.event.pull_request.number }}"
             
-            echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/pull/${{ github.event.pull_request.number }}/FROM_${{ github.event.pull_request.head.repo.full_name }}_${{ github.event.pull_request.head.ref }}_TO_${{ github.event.pull_request.base.ref }}/"
-            echo "::set-output name=io-path-merged::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/pull/${{ github.event.pull_request.number }}/FROM_${{ github.event.pull_request.head.repo.full_name }}_${{ github.event.pull_request.head.ref }}_TO_${{ github.event.pull_request.base.ref }}_MERGED/"
+            echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/pull/${{ github.event.pull_request.number }}/FROM_${{ github.event.pull_request.head.repo.full_name }}_${{ github.event.pull_request.head.ref }}_TO_${{ github.event.pull_request.base.ref }}"
+            echo "::set-output name=io-path-merged::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/pull/${{ github.event.pull_request.number }}/FROM_${{ github.event.pull_request.head.repo.full_name }}_${{ github.event.pull_request.head.ref }}_TO_${{ github.event.pull_request.base.ref }}_MERGED"
           else
             echo EXITING DUE TO UNKNOWN EVENT NAME.
             exit 1
