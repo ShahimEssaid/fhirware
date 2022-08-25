@@ -192,7 +192,7 @@ jobs:
           git fetch --all
           git checkout -b upstream-${{ inputs.pr-base-ref }} --track  "upstream/${{ inputs.pr-base-ref }}"
           # check if the pr ref and base have diverged, and need a merge
-          if ! git merge-base --is-ancestor upstream-${{ inputs.pr-base-ref }} upstream/${{ inputs.base-ref }}; then
+          if ! git merge-base --is-ancestor upstream-${{ inputs.pr-base-ref }} upstream/${{ inputs.pr-base-ref }}; then
             # Diverged
             if git merge "${{ inputs.ig-ref }}"; then
               # Merge succeeded
