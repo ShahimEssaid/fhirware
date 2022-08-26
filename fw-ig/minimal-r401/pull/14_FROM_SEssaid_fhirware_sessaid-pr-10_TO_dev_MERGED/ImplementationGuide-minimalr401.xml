@@ -3,13 +3,13 @@
 <ImplementationGuide xmlns="http://hl7.org/fhir">
   <id value="minimalr401"/>
   <text>
-    <status value="extensions"/><div xmlns="http://www.w3.org/1999/xhtml"><h2>MinimalR401 on Dev 8.25 edit 3</h2><p>The official URL for this implementation guide is: </p><pre>http://example.com/minimal-r401/ImplementationGuide/minimalr401</pre></div>
+    <status value="extensions"/><div xmlns="http://www.w3.org/1999/xhtml"><h2>MinimalR401 on Dev 8.25 edit 6</h2><p>The official URL for this implementation guide is: </p><pre>http://example.com/minimal-r401/ImplementationGuide/minimalr401</pre></div>
   </text>
   <url value="http://example.com/minimal-r401/ImplementationGuide/minimalr401"/>
   <version value="0.0.1"/>
-  <name value="MinimalR401 on Dev 8.25 edit 3"/>
+  <name value="MinimalR401 on Dev 8.25 edit 6"/>
   <status value="draft"/>
-  <date value="2022-08-26T05:42:32+00:00"/>
+  <date value="2022-08-26T06:08:38+00:00"/>
   <contact>
     <telecom>
       <system value="url"/>

@@ -1,9 +1,9 @@
 {
   "url": "http://example.com/minimal-r401/ImplementationGuide/minimalr401",
-  "name": "MinimalR401 on Dev 8.25 edit 3",
+  "name": "MinimalR401 on Dev 8.25 edit 6",
   "package-id": "minimalr401",
   "ig-ver": "0.0.1",
-  "date": "Fri, 26 Aug, 2022 05:42:32 +0000",
+  "date": "Fri, 26 Aug, 2022 06:08:38 +0000",
   "errs": 0,
   "warnings": 4,
   "hints": 0,
