@@ -17,7 +17,7 @@
   fhir:StructureDefinition.name [ fhir:value "R4JsonPatient"];
   fhir:StructureDefinition.title [ fhir:value "R4 JSON Patient"];
   fhir:StructureDefinition.status [ fhir:value "draft"];
-  fhir:StructureDefinition.date [ fhir:value "2022-08-26T05:51:18+00:00"^^xsd:dateTime];
+  fhir:StructureDefinition.date [ fhir:value "2022-08-26T06:07:08+00:00"^^xsd:dateTime];
   fhir:StructureDefinition.contact [
      fhir:index 0;
      fhir:ContactDetail.telecom [
