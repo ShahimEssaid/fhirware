@@ -3,13 +3,13 @@
   "id": "minimalr401",
   "text": {
     "status": "extensions",
-    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h2>MinimalR401 on Dev 8.25</h2><p>The official URL for this implementation guide is: </p><pre>http://example.com/minimal-r401/ImplementationGuide/minimalr401</pre></div>"
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h2>MinimalR401 on Dev 8.25 edit 2</h2><p>The official URL for this implementation guide is: </p><pre>http://example.com/minimal-r401/ImplementationGuide/minimalr401</pre></div>"
   },
   "url": "http://example.com/minimal-r401/ImplementationGuide/minimalr401",
   "version": "0.0.1",
-  "name": "MinimalR401 on Dev 8.25",
+  "name": "MinimalR401 on Dev 8.25 edit 2",
   "status": "draft",
-  "date": "2022-08-26T05:08:50+00:00",
+  "date": "2022-08-26T05:19:33+00:00",
   "contact": [
     {
       "telecom": [

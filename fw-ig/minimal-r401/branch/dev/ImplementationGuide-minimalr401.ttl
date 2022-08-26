@@ -10,13 +10,13 @@
   fhir:Resource.id [ fhir:value "minimalr401"];
   fhir:DomainResource.text [
      fhir:Narrative.status [ fhir:value "extensions" ];
-     fhir:Narrative.div "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h2>MinimalR401 on Dev 8.25</h2><p>The official URL for this implementation guide is: </p><pre>http://example.com/minimal-r401/ImplementationGuide/minimalr401</pre></div>"
+     fhir:Narrative.div "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h2>MinimalR401 on Dev 8.25 edit 2</h2><p>The official URL for this implementation guide is: </p><pre>http://example.com/minimal-r401/ImplementationGuide/minimalr401</pre></div>"
   ];
   fhir:ImplementationGuide.url [ fhir:value "http://example.com/minimal-r401/ImplementationGuide/minimalr401"];
   fhir:ImplementationGuide.version [ fhir:value "0.0.1"];
-  fhir:ImplementationGuide.name [ fhir:value "MinimalR401 on Dev 8.25"];
+  fhir:ImplementationGuide.name [ fhir:value "MinimalR401 on Dev 8.25 edit 2"];
   fhir:ImplementationGuide.status [ fhir:value "draft"];
-  fhir:ImplementationGuide.date [ fhir:value "2022-08-26T05:08:50+00:00"^^xsd:dateTime];
+  fhir:ImplementationGuide.date [ fhir:value "2022-08-26T05:19:33+00:00"^^xsd:dateTime];
   fhir:ImplementationGuide.contact [
      fhir:index 0;
      fhir:ContactDetail.telecom [
