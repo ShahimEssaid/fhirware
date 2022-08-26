@@ -1,0 +1,21 @@
+﻿MinimalR401 on Dev 8.25 edit 6 : Validation Results
+=========================================
+
+err = 0, warn = 4, info = 0
+IG Publisher Version: 1.1.128
+Generated Fri Aug 26 13:30:45 UTC 2022. FHIR version 4.0.1 for minimalr401#0.0.1 (canonical = http://example.com/minimal-r401)
+ Build Errors : 0 / 0 / 0
+ /ig/fsh-generated/resources/StructureDefinition-fsh-patient : 0 / 1 / 1
+ /ig/input/ig : 0 / 1 / 1
+ /ig/input/resources/StructureDefinition-r4-json-patient : 0 / 1 / 1
+ /ig/input/resources/StructureDefinition-r4-xml.patient : 0 / 1 / 1
+</table>
+== n/a ==
+== fsh-generated/resources/StructureDefinition-fsh-patient.json ==
+WARNING: StructureDefinition.where(url = 'http://example.com/minimal-r401/StructureDefinition/fsh-patient'): The Implementation Guide contains no examples for this profile
+== input/ig.xml ==
+WARNING: ImplementationGuide/minimalr401: ImplementationGuide: Rule ig-0: 'Name should be usable as an identifier for the module by machine processing applications such as code generation' Failed
+== input/resources/StructureDefinition-r4-json-patient.json ==
+WARNING: StructureDefinition.where(url = 'http://example.com/minimal-r401/StructureDefinition/r4-json-patient'): The Implementation Guide contains no examples for this profile
+== input/resources/StructureDefinition-r4-xml.patient.xml ==
+WARNING: StructureDefinition.where(url = 'http://example.com/minimal-r401/StructureDefinition/r4-xml.patient'): The Implementation Guide contains no examples for this profile
