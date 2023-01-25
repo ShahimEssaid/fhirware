@@ -3,7 +3,7 @@
 
 err = 0, warn = 8, info = 0
 IG Publisher Version: 1.2.30
-Generated Wed Jan 25 19:51:25 UTC 2023. FHIR version 4.0.1 for minimalr401#0.0.1 (canonical = http://example.com/minimal-r401)
+Generated Wed Jan 25 19:55:23 UTC 2023. FHIR version 4.0.1 for minimalr401#0.0.1 (canonical = http://example.com/minimal-r401)
  Build Errors : 0 / 4 / 0
  /ig/fsh-generated/resources/StructureDefinition-fsh-patient : 0 / 1 / 1
  /ig/input/ig : 0 / 1 / 1
