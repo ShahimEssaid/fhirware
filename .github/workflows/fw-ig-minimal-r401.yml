@@ -10,8 +10,8 @@ name: minimal-r401-ig-wf
 # 6.
 env:
   IG_PATH: 'fw-ig/minimal-r401'  # The relative folder path of the IG root directory
-  IG_READ_SECRET_NAME: GITHUB_TOKEN
-  IG_WRITE_SECRET_NAME: GITHUB_TOKEN
+  IG_READ_SECRET_NAME: GITHUB_TOKEN  # this is the name of the secrets token that should be used for IG source code read access.
+#  IG_WRITE_SECRET_NAME: GITHUB_TOKEN  # this is the name of the secrets token that should be used for IG source code write access.
 
   DOCKER_PUBLISHER_TAG: latest  # The Docker tag for the Publisher version wanted for the build from: https://hub.docker.com/repository/docker/sessaid/ig-publisher
   PUBLISHER_ARGS: "-ig /ig/ig.ini"  # the publisher command line arguments
@@ -61,7 +61,7 @@ jobs:
       ig-ref: ${{ steps.arguments.outputs.ig-ref }}
       ig-path: ${{ steps.arguments.outputs.ig-path }}
       ig-read-secret-name: ${{ steps.arguments.outputs.ig-read-secret-name }}
-      ig-write-secret-name: ${{ steps.arguments.outputs.ig-write-secret-name }}
+      #      ig-write-secret-name: ${{ steps.arguments.outputs.ig-write-secret-name }}
 
 
       pr-base-ref: ${{ steps.arguments.outputs.pr-base-ref }}
@@ -91,77 +91,36 @@ jobs:
       - name: arguments
         id: arguments
         run: |
-          
           if [ "${{ github.event_name }}" = "push" ]; then
-            echo "::set-output name=ig-owner-repo::${{ github.repository }}"
-            echo "::set-output name=ig-ref::${{ github.ref_name }}"
-            echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/branch/${{ github.ref_name }}"
+            echo "ig-owner-repo=${{ github.repository }}" >> $GITHUB_OUTPUT
+            echo "ig-ref=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+            echo "io-path=${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/branch/${{ github.ref_name }}" >> $GITHUB_OUTPUT
           elif [ "${{ github.event_name }}" = "pull_request_target" ]; then
-            echo "::set-output name=ig-owner-repo::${{ github.event.pull_request.head.repo.full_name }}"
-            echo "::set-output name=ig-ref::${{ github.event.pull_request.head.ref }}"
-          
-            echo "::set-output name=pr-base-ref::${{ github.event.pull_request.base.ref }}"
-            echo "::set-output name=pr-number::${{ github.event.pull_request.number }}"
+            echo "ig-owner-repo=${{ github.event.pull_request.head.repo.full_name }}" >> $GITHUB_OUTPUT
+            echo "ig-ref=${{ github.event.pull_request.head.ref }}" >> $GITHUB_OUTPUT
+               
+            echo "pr-base-ref=${{ github.event.pull_request.base.ref }}" >> $GITHUB_OUTPUT
+            echo "pr-number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
             
-            echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/pull/${{ github.event.pull_request.number }}_FROM_${{ github.event.pull_request.head.user.login }}_${{ github.event.pull_request.head.repo.name }}_${{ github.event.pull_request.head.ref }}_TO_${{ github.event.pull_request.base.ref }}"
-            echo "::set-output name=io-path-merged::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/pull/${{ github.event.pull_request.number }}_FROM_${{ github.event.pull_request.head.user.login }}_${{ github.event.pull_request.head.repo.name }}_${{ github.event.pull_request.head.ref }}_TO_${{ github.event.pull_request.base.ref }}_MERGED"
+            echo "io-path=${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/pull/${{ github.event.pull_request.number }}_FROM_${{ github.event.pull_request.head.user.login }}_${{ github.event.pull_request.head.repo.name }}_${{ github.event.pull_request.head.ref }}_TO_${{ github.event.pull_request.base.ref }}" >> $GITHUB_OUTPUT
+            echo "io-path-merged=${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/pull/${{ github.event.pull_request.number }}_FROM_${{ github.event.pull_request.head.user.login }}_${{ github.event.pull_request.head.repo.name }}_${{ github.event.pull_request.head.ref }}_TO_${{ github.event.pull_request.base.ref }}_MERGED" >> $GITHUB_OUTPUT
           else
             echo EXITING DUE TO UNKNOWN EVENT NAME.
             exit 1
           fi
           
-          echo "::set-output name=ig-path::${{ env.IG_PATH }}"
-          echo "::set-output name=ig-read-secret-name::${{ env.IG_READ_SECRET_NAME }}"
-          echo "::set-output name=ig-write-secret-name::${{ env.IG_WRITE_SECRET_NAME }}"
+          echo "ig-path=${{ env.IG_PATH }}" >> $GITHUB_OUTPUT
+          echo "ig-read-secret-name=${{ env.IG_READ_SECRET_NAME }}" >> $GITHUB_OUTPUT
+          #          echo "ig-write-secret-name=${{ env.IG_WRITE_SECRET_NAME }}" >> $GITHUB_OUTPUT
           
-          echo "::set-output name=publisher-args::${{ env.PUBLISHER_ARGS }}"
-          echo "::set-output name=docker-publisher-tag::${{ env.DOCKER_PUBLISHER_TAG }}"
+          echo "publisher-args=${{ env.PUBLISHER_ARGS }}" >> $GITHUB_OUTPUT
+          echo "docker-publisher-tag=${{ env.DOCKER_PUBLISHER_TAG }}" >> $GITHUB_OUTPUT
           
           # IO
-          echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
-          echo "::set-output name=io-repo::${{ env.IO_REPO }}"
-          echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
-          echo "::set-output name=io-write-secret-name::${{ env.IO_WRITE_SECRET_NAME }}"
-
-
-#    steps:
-#      - name: arguments
-#        id: arguments
-#        run: |
-#           if [ "${{ github.event_name }}" = "push" ]; then
-#               echo "::set-output name=ig-owner-repo::${{ env.IG_OWNER_REPO }}"
-#               echo "::set-output name=ig-ref::${{ env.IG_REF_NAME }}"
-#               echo "::set-output name=ig-read-secret-name::${{ env.IG_READ_SECRET_NAME }}"
-#               echo "::set-output name=ig-write-secret-name::${{ env.IG_WRITE_SECRET_NAME }}"
-#
-#               echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
-#               echo "::set-output name=io-repo::${{ env.IO_REPO }}"
-#               echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
-#               echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/branch/${{ github.ref_name }}"
-#               echo "::set-output name=io-write-secrete-name::${{ env.IO_WRITE_SECRET_NAME }}"
-#
-#          #
-#          #            echo "::set-output name=try-merge::false"
-#          #            echo "::set-output name=base-ref::"
-#          #            echo "::set-output name=pr-number::1"
-#
-#               elif [ "${{ github.event_name }}" = "pull_request_target" ]; then
-#                 echo "::set-output name=owner-repo::${{ github.event.pull_request.head.repo.full_name }}"
-#                 echo "::set-output name=ref::${{ github.event.pull_request.head.ref }}"
-#                 echo "::set-output name=try-merge::true"
-#                 echo "::set-output name=base-ref::${{ github.event.pull_request.base.ref }}"
-#                 echo "::set-output name=pr-number::${{ github.event.number }}"
-#
-#                 echo "::set-output name=io-owner::${{ env.IO_OWNER }}"
-#                 echo "::set-output name=io-repo::${{ env.IO_REPO }}"
-#                 echo "::set-output name=io-branch::${{ env.IO_BRANCH }}"
-#                 echo "::set-output name=io-path::${{ env.IO_PATH_PREFIX }}${{ env.IG_PATH }}/pr-${{ github.event.number }}/${{ github.event.pull_request.base.ref }}/FROM-${{ github.event.pull_request.head.repo.full_name }}/${{ github.event.pull_request.head.ref }}"
-#
-#                 else
-#                 echo EXITING DUE TO UNKNOWN EVENT NAME.
-#                 exit 1
-#               fi
-#
+          echo "io-owner=${{ env.IO_OWNER }}" >> $GITHUB_OUTPUT
+          echo "io-repo=${{ env.IO_REPO }}" >> $GITHUB_OUTPUT
+          echo "io-branch=${{ env.IO_BRANCH }}" >> $GITHUB_OUTPUT
+          echo "io-write-secret-name=${{ env.IO_WRITE_SECRET_NAME }}" >> $GITHUB_OUTPUT
 
   build:
     needs: setup
@@ -173,7 +132,7 @@ jobs:
       ig-ref: ${{ needs.setup.outputs.ig-ref }}
       ig-path: ${{ needs.setup.outputs.ig-path }}
       ig-read-secret-name: ${{ needs.setup.outputs.ig-read-secret-name }}
-      ig-write-secret-name: ${{ needs.setup.outputs.ig-write-secret-name }}
+      #      ig-write-secret-name: ${{ needs.setup.outputs.ig-write-secret-name }}
 
       pr-base-ref: ${{ needs.setup.outputs.pr-base-ref }}
       pr-number: ${{ needs.setup.outputs.pr-number }}
